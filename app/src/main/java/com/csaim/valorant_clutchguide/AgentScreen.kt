@@ -58,9 +58,9 @@ class AgentScreen : ComponentActivity() {
 fun AgentCard(agentName: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
-            .width(120.dp)
-            .height(120.dp), // increased height for a larger button than an iPhone app icon
+            .padding(16.dp),
+//            .width(120.dp)
+//            .height(120.dp), // increased height for a larger button than an iPhone app icon
 
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),

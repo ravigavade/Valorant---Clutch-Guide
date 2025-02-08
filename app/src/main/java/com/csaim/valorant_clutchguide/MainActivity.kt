@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,82 +47,86 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            var searchTerm by remember { mutableStateOf("") }
 
             ValorantClutchGuideTheme {
-
-                ////
-                Column(
-                    modifier = Modifier
-                        .background(Color.Gray)
-                        .fillMaxSize()
-                ) {
-
-                    Row(
-                        modifier = Modifier
-                            .padding(16.dp)
-                    ) {
-
-                        OutlinedTextField(
-                            value = searchTerm,
-                            onValueChange = { searchTerm = it },
-                            label = { Text("Search term goes here") },
-//                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Button(
-                            onClick = {
-                                startActivity(Intent(this@MainActivity,SideScreen::class.java))
-                            },
-                            modifier = Modifier
-                        ) {
-                            Text(text = "Go")
-                        }
-                    }
-
-                    //list of maps
-                    val maps= listOf("Ascent", "Bind", "Breeze", "Fracture", "Haven", "Icebox", "Pearl", "Split", "Lotus", "Sunset", "Abyss")
-
-                    //replancement of recycler view
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(16.dp)
-                    ) {
-                        items(maps){ mapName->//maps is the list of maps
-                            //card view for better ui
-                            Card(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillParentMaxWidth()
-                                    .height(50.dp),
-                                shape = RoundedCornerShape(12.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                                onClick = { startActivity(Intent(this@MainActivity,AgentScreen::class.java)) }
-
-                            ) {
-                                //box to center the text
-                                Box(
-                                    modifier = Modifier.fillMaxSize(), // Make the Box fill the whole Card
-                                    contentAlignment = Alignment.Center // Center the content inside the Box
-                                ) {
-                                    Text(
-                                        text = mapName,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                }
-                ///
-
-
-
-
+                home_screen()
 
             }
         }
     }
+}
+
+
+@Composable
+fun home_screen(modifier: Modifier = Modifier) {
+    ////
+    var searchTerm by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    Column(
+        modifier = Modifier
+            .background(Color.Gray)
+            .fillMaxSize()
+    ) {
+
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+
+            OutlinedTextField(
+                value = searchTerm,
+                onValueChange = { searchTerm = it },
+                label = { Text("Search term goes here") },
+            )
+
+            Button(
+                onClick = {
+                    context.startActivity(Intent(context, SideScreen::class.java))
+                },
+                modifier = Modifier
+            ) {
+                Text(text = "Go")
+            }
+        }
+
+        // List of maps
+        val maps = listOf("Ascent", "Bind", "Breeze", "Fracture", "Haven", "Icebox", "Pearl", "Split", "Lotus", "Sunset", "Abyss")
+
+        // Replacing RecyclerView with LazyColumn
+        LazyColumn(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            items(maps) { mapName -> // maps is the list of maps
+                // Card view for better UI
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    onClick = {
+                        context.startActivity(Intent(context, AgentScreen::class.java)) // Correct way to start the activity
+                    }
+                ) {
+                    // Box to center the text
+                    Box(
+                        modifier = Modifier.fillMaxSize(), // Make the Box fill the whole Card
+                        contentAlignment = Alignment.Center // Center the content inside the Box
+                    ) {
+                        Text(
+                            text = mapName,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+
+    }
+    ///
 }
 
