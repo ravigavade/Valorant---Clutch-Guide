@@ -35,7 +35,7 @@ class AgentScreen : ComponentActivity() {
 
                 Column {
 
-                    //replancement of recycler view haha1
+                    //replancement of recycler view haha2
                     LazyColumn(
                         modifier = Modifier
                             .padding(16.dp)
