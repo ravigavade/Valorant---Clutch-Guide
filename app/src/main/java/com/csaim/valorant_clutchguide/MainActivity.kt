@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
 
             ValorantClutchGuideTheme {
 
-                ///
+                ////
                 Column(
                     modifier = Modifier
                         .background(Color.Gray)
