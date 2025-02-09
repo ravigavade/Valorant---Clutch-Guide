@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -105,9 +106,10 @@ fun home_screen(modifier: Modifier = Modifier) {
 //                    .background(Color(0xFFFF4654)) //light color
                     .background(Color(0xFFBA3A46)) //dark
                     .fillMaxSize()
+                    .statusBarsPadding()
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(end = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -124,13 +126,17 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .weight(1f)
                     )
-                    Image(
-                        painter = painterResource(id = R.drawable.icon),
-                        contentDescription = "App Icon",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CircleShape)
-                    )
+                    Card(
+                        shape = RoundedCornerShape(5.dp),
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.icon),
+                            contentDescription = "App Icon",
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                    }
+
                 }
 
 
@@ -141,7 +147,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color(0xFFBA3A46)) // Use the hex code directly
-                        .padding(bottom = 16.dp),
+                        .padding(top = 10.dp, bottom = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
                 ) {
                     Text(
@@ -208,7 +214,7 @@ fun ActiveMaps(navController: NavController) {
             items(maps) { mapName ->
                 Card(
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(top = 16.dp)
                         .fillMaxWidth()
                         .height(150.dp),
                     shape = RoundedCornerShape(12.dp),

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -42,12 +43,13 @@ class AgentScreen : ComponentActivity() {
                 Column(
                     modifier = Modifier
                         .background(Color(0xFFFF4654))
+                        .statusBarsPadding()
                 ) {
 
                     val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "Killjoy", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
                     LazyVerticalGrid(
                         modifier = Modifier
-                            .padding(10.dp),
+                            .padding(horizontal = 7.dp),
                         columns = GridCells.Fixed(3)
                     ) {
                         items(agents) { agentName ->
@@ -66,7 +68,9 @@ class AgentScreen : ComponentActivity() {
 fun AgentCard(agentName: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(7.dp),
+            .padding(horizontal = 7.dp)
+            .padding(bottom = 14.dp),
+//            .padding(7.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(

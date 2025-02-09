@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 
 class SideScreen : ComponentActivity() {
@@ -32,8 +37,9 @@ class SideScreen : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .background(Color.Gray)
+                        .background(Color(0xFFBA3A46))
                         .fillMaxSize()
+
                 ) {
 
                     //Attackers
@@ -42,6 +48,7 @@ class SideScreen : ComponentActivity() {
                             .padding(16.dp)
                             .fillMaxWidth()
                             .height(150.dp),
+
                         onClick = {( startActivity(Intent(this@SideScreen,AttackScreen::class.java)))}
 
                     ){
@@ -50,10 +57,18 @@ class SideScreen : ComponentActivity() {
                             contentAlignment = Alignment.Center // Center the content inside the Box
 
                         ){
+                            Image(
+                                painter = painterResource(R.drawable.attackersside),
+                                contentDescription = "Attackers Side",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
                             Text(
                                 text = "Attacker's Side",
-
-                                )
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                         }
 
                     }
@@ -73,10 +88,19 @@ class SideScreen : ComponentActivity() {
                             contentAlignment = Alignment.Center // Center the content inside the Box
 
                         ){
+
+                            Image(
+                                painter = painterResource(R.drawable.defendersside),
+                                contentDescription = "Attackers Side",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
                             Text(
                                 text = "Defender's Side",
-
-                                )
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                         }
 
                     }
