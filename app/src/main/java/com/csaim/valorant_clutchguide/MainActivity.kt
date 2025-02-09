@@ -12,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -19,6 +20,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -58,6 +60,7 @@ fun home_screen(modifier: Modifier = Modifier) {
     ModalNavigationDrawer(
         drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
         drawerContent = {
+            // Drawer content
             ModalDrawerSheet() {
                 Text(
                     "Valorant - Clutch Guide",
@@ -95,11 +98,12 @@ fun home_screen(modifier: Modifier = Modifier) {
                 )
             }
         },
+        // Content of the screen
         content = {
             Column(
                 modifier = Modifier
-//                    .background(Color(0xFFFF4654)) // Use the hex code directly
-                    .background(Color(0xFFBA3A46)) // Use the hex code directly
+//                    .background(Color(0xFFFF4654)) //light color
+                    .background(Color(0xFFBA3A46)) //dark
                     .fillMaxSize()
             ) {
                 Row(
@@ -120,15 +124,13 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .weight(1f)
                     )
-                    Button(
-                        onClick = {
-                            context.startActivity(Intent(context, SideScreen::class.java))
-                        },
+                    Image(
+                        painter = painterResource(id = R.drawable.icon),
+                        contentDescription = "App Icon",
                         modifier = Modifier
-//                            .weight(1f)
-                    ) {
-                        Text(text = "Our logo")
-                    }
+                            .size(50.dp)
+                            .clip(CircleShape)
+                    )
                 }
 
 
@@ -139,7 +141,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color(0xFFBA3A46)) // Use the hex code directly
-                        .padding(16.dp),
+                        .padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
                 ) {
                     Text(
@@ -200,7 +202,7 @@ fun ActiveMaps(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(top = 13.dp)
+//                .padding(top = 13.dp)
 //                .background(Color.White)
         ) {
             items(maps) { mapName ->
@@ -264,7 +266,7 @@ fun NonActiveMaps(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(top = 13.dp)
+//                .padding(top = 13.dp)
         ) {
             items(maps) { mapName ->
                 Card(

@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,16 +39,22 @@ class AgentScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-                val agents = listOf("Clove","Jett", "Viper", "Brimstone", "Cypher", "Reyna", )
-                LazyVerticalGrid(
+                Column(
                     modifier = Modifier
-                        .padding(16.dp),
-                    columns = GridCells.Fixed(3)
+                        .background(Color(0xFFFF4654))
                 ) {
-                    items(agents) { agentName ->
-                        AgentCard(agentName = agentName, onClick = {
-                            startActivity(Intent(this@AgentScreen, SideScreen::class.java))
-                        })
+
+                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "Killjoy", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
+                    LazyVerticalGrid(
+                        modifier = Modifier
+                            .padding(10.dp),
+                        columns = GridCells.Fixed(3)
+                    ) {
+                        items(agents) { agentName ->
+                            AgentCard(agentName = agentName, onClick = {
+                                startActivity(Intent(this@AgentScreen, SideScreen::class.java))
+                            })
+                        }
                     }
                 }
             }
@@ -58,13 +66,13 @@ class AgentScreen : ComponentActivity() {
 fun AgentCard(agentName: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(16.dp),
-//            .width(120.dp)
-//            .height(120.dp), // increased height for a larger button than an iPhone app icon
-
+            .padding(7.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        onClick = onClick
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFBA3A46)
+        ),
+        onClick = onClick,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,6 +88,7 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = agentName,
+                color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
             )
@@ -96,8 +105,32 @@ fun getAgentImageRes(agentName: String): Int {
         "Reyna" -> R.drawable.reyna
         "Clove" -> R.drawable.clove
         "Jett" -> R.drawable.jett
+        "Raze" -> R.drawable.raze
+        "Skye" -> R.drawable.skye
+        "Yoru" -> R.drawable.yoru
+        "Astra" -> R.drawable.astra
+        "KAY/O" -> R.drawable.kayo
+        "Chamber" -> R.drawable.chamber
+        "Neon" -> R.drawable.neon
+        "Fade" -> R.drawable.fade
+        "Harbor" -> R.drawable.harbor
+        "Gekko" -> R.drawable.gekko
+        "Deadlock" -> R.drawable.deadlock
+        "Iso" -> R.drawable.iso
+        "Phoenix" -> R.drawable.phoenix
+        "Sage" -> R.drawable.sage
+        "Sova" -> R.drawable.sova
+        "Killjoy" -> R.drawable.killjoy
+        "Breach" -> R.drawable.breach
+        "Omen" -> R.drawable.omen
+        "Vyse" -> R.drawable.vyse
+        "Tejo" -> R.drawable.tejo
 
 
-        else -> R.drawable.placeholder // default image if none is found
+
+
+
+
+        else -> R.drawable.cypher // default image if none is found
     }
 }
