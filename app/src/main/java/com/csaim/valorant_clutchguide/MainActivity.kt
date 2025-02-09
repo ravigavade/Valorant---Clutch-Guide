@@ -21,9 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -31,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,9 +58,9 @@ fun home_screen(modifier: Modifier = Modifier) {
     ModalNavigationDrawer(
         drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet() {
                 Text(
-                    "Menu",
+                    "Valorant - Clutch Guide",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(16.dp)
@@ -95,7 +98,8 @@ fun home_screen(modifier: Modifier = Modifier) {
         content = {
             Column(
                 modifier = Modifier
-//                    .background(Color.Gray)
+//                    .background(Color(0xFFFF4654)) // Use the hex code directly
+                    .background(Color(0xFFBA3A46)) // Use the hex code directly
                     .fillMaxSize()
             ) {
                 Row(
@@ -105,77 +109,98 @@ fun home_screen(modifier: Modifier = Modifier) {
 
                     // Header of the home screen
                     IconButton(onClick = { drawerState = !drawerState }) {
-                        Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                        Icon(
+                            Icons.Filled.Menu,
+                            contentDescription = "Menu",
+                            tint = Color.White
+                        )
                     }
-                    OutlinedTextField(
+//
+                    Spacer(
                         modifier = Modifier
-                            .weight(2f),
-                        value = searchTerm,
-                        onValueChange = { searchTerm = it },
-                        label = { Text("Search term goes here") },
+                            .weight(1f)
                     )
                     Button(
                         onClick = {
                             context.startActivity(Intent(context, SideScreen::class.java))
                         },
                         modifier = Modifier
-                            .weight(1f)
+//                            .weight(1f)
                     ) {
-                        Text(text = "Go")
+                        Text(text = "Our logo")
                     }
                 }
 
-                Divider()
 
-                // NavController for navigating between screens
+
                 val navController = rememberNavController()
 
                 Row(
                     modifier = Modifier
-                        .background(Color.Black)
                         .fillMaxWidth()
+                        .background(Color(0xFFBA3A46)) // Use the hex code directly
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
                 ) {
-                    Button(
+                    Text(
+                        text = "Active Maps",
+                        color = Color.White,
+
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
-                            .weight(1f),
-                        onClick = { navController.navigate("home") }
-                    ) {
-                        Text("Home Screen")
-                    }
+                            .weight(1f) // Each Text gets equal space
+                            .clickable {
 
+                                navController.navigate("home")
+                                       },
+                        textAlign = TextAlign.Center
+                    )
 
-                    Button(
+                    Text(
+                        text = "Other Maps",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(horizontal = 5.dp)
-                            .weight(1f),
-                        onClick = { navController.navigate("details") }
-                    ) {
-                        Text("Details Screen")
-                    }
+                            .weight(1f) // Each Text gets equal space
+                            .clickable { navController.navigate("details") },
+                        textAlign = TextAlign.Center
+                    )
                 }
 
                 // Navigation setup
                 NavHost(navController, startDestination = "home") {
-                    composable("home") { HomeScreen(navController) }
-                    composable("details") { DetailsScreen(navController) }
+                    composable("home") { ActiveMaps(navController) }
+                    composable("details") { NonActiveMaps(navController) }
                 }
+
+                // NavController for navigating between screens
+
+
+
             }
         }
     )
 }
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun ActiveMaps(navController: NavController) {
     val context = LocalContext.current
     val maps = listOf("Bind", "Fracture", "Haven", "Pearl", "Split", "Lotus", "Abyss")
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .background(Color(0xFFFF4654)) // Use the hex code directly
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
+                .padding(top = 13.dp)
 //                .background(Color.White)
         ) {
             items(maps) { mapName ->
@@ -183,7 +208,7 @@ fun HomeScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .fillMaxWidth()
-                        .height(100.dp),
+                        .height(150.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
@@ -226,20 +251,27 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun DetailsScreen(navController: NavController) {
+fun NonActiveMaps(navController: NavController) {
     val maps = listOf("Ascent", "Breeze", "Icebox", "Sunset")
     val context = LocalContext.current
 
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .background(Color(0xFFFF4654)) // Use the hex code directly
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally)
+    {
         LazyColumn(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 13.dp)
         ) {
             items(maps) { mapName ->
                 Card(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(vertical = 8.dp)
                         .fillMaxWidth()
-                        .height(50.dp),
+                        .height(150.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
@@ -250,9 +282,22 @@ fun DetailsScreen(navController: NavController) {
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
+                        Image(
+                            painter = painterResource(
+                                if(mapName == "Ascent") R.drawable.ascent
+                                else if(mapName == "Breeze") R.drawable.breeze
+                                else if(mapName == "Icebox") R.drawable.icebox
+                                else if(mapName == "Sunset") R.drawable.sunset
+                                else R.drawable.cypher
+                            ), // Replace with your image resource
+                            contentDescription = "Card background image",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop // Crop or fit the image as needed
+                        )
                         Text(
                             text = mapName,
-                            fontSize = 18.sp,
+                            color = Color.White,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -261,3 +306,7 @@ fun DetailsScreen(navController: NavController) {
         }
     }
 }
+
+
+
+
