@@ -168,7 +168,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(bottom = 16.dp)//
+                                modifier = Modifier.padding(bottom = 16.dp)
 
                             )
 
