@@ -41,7 +41,7 @@ class AgentScreen : ComponentActivity() {
                 LazyVerticalGrid(
                     modifier = Modifier
                         .padding(16.dp),
-                    columns = GridCells.Fixed(2)
+                    columns = GridCells.Fixed(3)
                 ) {
                     items(agents) { agentName ->
                         AgentCard(agentName = agentName, onClick = {
