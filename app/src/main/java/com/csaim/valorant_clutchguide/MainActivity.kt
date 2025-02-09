@@ -107,7 +107,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    // Header of the home screen
+                    // Header of the home screenh
                     IconButton(onClick = { drawerState = !drawerState }) {
                         Icon(
                             Icons.Filled.Menu,
