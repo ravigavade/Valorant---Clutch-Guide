@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -80,19 +81,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 //                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    Card(
-                        modifier = Modifier
-                            .padding(start = 16.dp),
-                        shape = RoundedCornerShape(5.dp),
 
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon),
-                            contentDescription = "App Icon",
-                            modifier = Modifier
-                                .size(50.dp)
-                        )
-                    }
                     Text(
                         "Valorant - Clutch Guide",
                         fontFamily = valo,
@@ -102,39 +91,88 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier.padding(16.dp)
                     )
                     Divider()
-                    Text(
-                        "Youtube",
-                        fontSize = 18.sp,
-                        fontFamily = valo,
+                    Row(
+                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
 
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .clickable { /* Handle Click */ }
-                    )
-                    Text(
-                        "Instagram",
-                        fontSize = 18.sp,
-                        fontFamily = valo,
+                            ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.yt),
+                                contentDescription = "App Icon",
+                                modifier = Modifier
+                                    .size(50.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        Text(
+                            "Youtube",
+                            fontSize = 18.sp,
+                            fontFamily = valo,
 
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
-                            }
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
+                                }
 
-                    )
-                    Text(
-                        "About us",
-                        fontSize = 18.sp,
-                        fontFamily = valo,
+                        )
+                    }
 
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .clickable { /* Handle Click */ }
-                    )
+                    Row {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+
+                            ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.insta),
+                                contentDescription = "App Icon",
+                                modifier = Modifier
+                                    .size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Instagram",
+                            fontSize = 18.sp,
+                            fontFamily = valo,
+
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
+                                }
+
+                        )
+                    }
+
+                    Row {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+
+                            ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.icon),
+                                contentDescription = "App Icon",
+                                modifier = Modifier
+                                    .size(50.dp)
+                            )
+                        }
+                        Text(
+                            "About us",
+                            fontSize = 18.sp,
+                            fontFamily = valo,
+
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                                .clickable { /* Handle Click */ }
+                        )
+
+                    }
+
                 }
 
             }
