@@ -23,6 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,8 +46,9 @@ fun home_screen(modifier: Modifier = Modifier) {
     var searchTerm by remember { mutableStateOf("") }
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
-    val instagram="https://www.instagram.com/valorant_clutch_guide/"
+    val instagram = "https://www.instagram.com/valorant_clutch_guide/"
 
+    // This is the drawer
     ModalNavigationDrawer(
         drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
         drawerContent = {
@@ -80,7 +85,6 @@ fun home_screen(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()
-
                         .clickable { /* Handle Click */ }
                 )
             }
@@ -95,10 +99,14 @@ fun home_screen(modifier: Modifier = Modifier) {
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
+                    // Header of the home screen
                     IconButton(onClick = { drawerState = !drawerState }) {
                         Icon(Icons.Filled.Menu, contentDescription = "Menu")
                     }
                     OutlinedTextField(
+                        modifier = Modifier
+                            .weight(2f),
                         value = searchTerm,
                         onValueChange = { searchTerm = it },
                         label = { Text("Search term goes here") },
@@ -108,40 +116,127 @@ fun home_screen(modifier: Modifier = Modifier) {
                             context.startActivity(Intent(context, SideScreen::class.java))
                         },
                         modifier = Modifier
+                            .weight(1f)
                     ) {
                         Text(text = "Go")
                     }
                 }
-                val maps = listOf("Ascent", "Bind", "Breeze", "Fracture", "Haven", "Icebox", "Pearl", "Split", "Lotus", "Sunset", "Abyss")
-                LazyColumn(
-                    modifier = Modifier.padding(16.dp)
+
+                Divider()
+
+                // NavController for navigating between screens
+                val navController = rememberNavController()
+
+                Row(
+                    modifier = Modifier
+                        .background(Color.Black)
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    items(maps) { mapName ->
-                        Card(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .height(50.dp),
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                            onClick = {
-                                context.startActivity(Intent(context, AgentScreen::class.java))
-                            }
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = mapName,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 5.dp)
+                            .weight(1f),
+                        onClick = { navController.navigate("home") }
+                    ) {
+                        Text("Home Screen")
                     }
+
+
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 5.dp)
+                            .weight(1f),
+                        onClick = { navController.navigate("details") }
+                    ) {
+                        Text("Details Screen")
+                    }
+                }
+
+                // Navigation setup
+                NavHost(navController, startDestination = "home") {
+                    composable("home") { HomeScreen(navController) }
+                    composable("details") { DetailsScreen(navController) }
                 }
             }
         }
     )
+}
+
+@Composable
+fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val maps = listOf("Bind", "Fracture", "Haven", "Pearl", "Split", "Lotus", "Abyss")
+
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            items(maps) { mapName ->
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    onClick = {
+                        context.startActivity(Intent(context, AgentScreen::class.java))
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = mapName,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+        Button(onClick = { navController.navigate("details") }) {
+            Text("Go to Details")
+        }
+    }
+}
+
+@Composable
+fun DetailsScreen(navController: NavController) {
+    val maps = listOf("Ascent", "Breeze", "Icebox", "Sunset")
+    val context = LocalContext.current
+
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            items(maps) { mapName ->
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    onClick = {
+                        context.startActivity(Intent(context, AgentScreen::class.java))
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = mapName,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
