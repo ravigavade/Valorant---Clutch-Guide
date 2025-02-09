@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,7 +20,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,7 +95,7 @@ fun home_screen(modifier: Modifier = Modifier) {
         content = {
             Column(
                 modifier = Modifier
-                    .background(Color.Gray)
+//                    .background(Color.Gray)
                     .fillMaxSize()
             ) {
                 Row(
@@ -171,14 +174,16 @@ fun HomeScreen(navController: NavController) {
 
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         LazyColumn(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+//                .background(Color.White)
         ) {
             items(maps) { mapName ->
                 Card(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(vertical = 8.dp)
                         .fillMaxWidth()
-                        .height(50.dp),
+                        .height(100.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
@@ -189,9 +194,25 @@ fun HomeScreen(navController: NavController) {
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
+                        Image(
+                            painter = painterResource(
+                                if(mapName == "Bind") R.drawable.bind
+                                else if(mapName == "Fracture") R.drawable.fracture
+                                else if(mapName == "Haven") R.drawable.haven
+                                else if(mapName == "Pearl") R.drawable.pearl
+                                else if(mapName == "Split") R.drawable.split
+                                else if(mapName == "Lotus") R.drawable.lotus
+                                else if(mapName == "Abyss") R.drawable.abyss
+                                else R.drawable.cypher
+                            ), // Replace with your image resource
+                            contentDescription = "Card background image",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop // Crop or fit the image as needed
+                        )
                         Text(
                             text = mapName,
-                            fontSize = 18.sp,
+                            color = Color.White,
+                            fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
