@@ -22,12 +22,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
+import com.csaim.valorant_clutchguide.ui.theme.valo
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
@@ -59,44 +63,80 @@ fun home_screen(modifier: Modifier = Modifier) {
 
     // This is the drawer
     ModalNavigationDrawer(
-        drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
+        drawerState = DrawerState(if (drawerState)
+            DrawerValue.Open else DrawerValue.Closed),
         drawerContent = {
-            // Drawer content
-            ModalDrawerSheet() {
-                Text(
-                    "Valorant - Clutch Guide",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp)
-                )
-                Divider()
-                Text(
-                    "Youtube",
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .clickable { /* Handle Click */ }
-                )
-                Text(
-                    "Instagram",
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
-                        }
 
-                )
-                Text(
-                    "About us",
-                    fontSize = 18.sp,
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .width(250.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .padding(16.dp)
                         .fillMaxWidth()
-                        .clickable { /* Handle Click */ }
-                )
+//                        .background(Color(0xFFBA3A46))
+                        .fillMaxSize()
+                        .padding(8.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    Card(
+                        modifier = Modifier
+                            .padding(start = 16.dp),
+                        shape = RoundedCornerShape(5.dp),
+
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.icon),
+                            contentDescription = "App Icon",
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                    }
+                    Text(
+                        "Valorant - Clutch Guide",
+                        fontFamily = valo,
+
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    Divider()
+                    Text(
+                        "Youtube",
+                        fontSize = 18.sp,
+                        fontFamily = valo,
+
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .clickable { /* Handle Click */ }
+                    )
+                    Text(
+                        "Instagram",
+                        fontSize = 18.sp,
+                        fontFamily = valo,
+
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
+                            }
+
+                    )
+                    Text(
+                        "About us",
+                        fontSize = 18.sp,
+                        fontFamily = valo,
+
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .clickable { /* Handle Click */ }
+                    )
+                }
+
             }
         },
         // Content of the screen
@@ -148,7 +188,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color(0xFFBA3A46))
-                            .padding(top = 10.dp,
+                            .padding(top = 16.dp,
 //                                bottom = 16.dp
                             ),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -165,10 +205,13 @@ fun home_screen(modifier: Modifier = Modifier) {
                             Text(
                                 text = "Active Maps",
                                 color = Color.White,
+                                fontFamily = valo,
+
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
+//                                fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(bottom = 16.dp)
+                                modifier = Modifier
+                                    .padding(bottom = 16.dp)
 
                             )
 
@@ -195,8 +238,10 @@ fun home_screen(modifier: Modifier = Modifier) {
                             Text(
                                 text = "Other Maps",
                                 color = Color.White,
+                                fontFamily = valo,
+
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
+//                                fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 16.dp)
 
@@ -289,7 +334,7 @@ fun ActiveMaps(navController: NavController) {
                         .padding(top = 16.dp)
                         .fillMaxWidth()
                         .height(150.dp),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
                         context.startActivity(Intent(context, AgentScreen::class.java))
@@ -316,9 +361,10 @@ fun ActiveMaps(navController: NavController) {
                         )
                         Text(
                             text = mapName,
+                            fontFamily = valo,
                             color = Color.White,
                             fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold
+//                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -352,7 +398,7 @@ fun NonActiveMaps(navController: NavController) {
                         .fillMaxWidth()
 //                        .fillMaxHeight(),
                         .height(150.dp),
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
                         context.startActivity(Intent(context, AgentScreen::class.java))
@@ -378,9 +424,11 @@ fun NonActiveMaps(navController: NavController) {
                         )
                         Text(
                             text = mapName,
+                            fontFamily = valo,
+
                             color = Color.White,
                             fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold
+//                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

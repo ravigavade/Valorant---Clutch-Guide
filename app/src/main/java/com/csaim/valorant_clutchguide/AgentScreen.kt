@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
+import com.csaim.valorant_clutchguide.ui.theme.valo
 
 class AgentScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +74,7 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
             .padding(horizontal = 7.dp)
             .padding(bottom = 14.dp),
 //            .padding(7.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFBA3A46)
@@ -83,7 +84,9 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxSize()
         ) {
             // Display the agent's face image. Replace the resource IDs with your actual images.
             Image(
@@ -96,9 +99,10 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = agentName,
+                fontFamily = valo,
                 color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                fontSize = 12.sp,
+//                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
             )
         }
     }

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
+import com.csaim.valorant_clutchguide.ui.theme.valo
 
 class SideScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +72,8 @@ class SideScreen : ComponentActivity() {
                                 text = "Attacker's Side",
                                 color = Color.White,
                                 fontSize = 24.sp,
+                                fontFamily = valo,
+
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -103,6 +106,8 @@ class SideScreen : ComponentActivity() {
                             )
                             Text(
                                 text = "Defender's Side",
+                                fontFamily = valo,
+
                                 color = Color.White,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
