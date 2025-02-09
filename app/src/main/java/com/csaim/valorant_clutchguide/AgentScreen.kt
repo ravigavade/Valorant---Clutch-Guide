@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,6 +45,7 @@ class AgentScreen : ComponentActivity() {
                     modifier = Modifier
                         .background(Color(0xFFFF4654))
                         .statusBarsPadding()
+                        .fillMaxSize()
                 ) {
 
                     val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "Killjoy", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
@@ -87,7 +89,9 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
             Image(
                 painter = painterResource(id = getAgentImageRes(agentName)),
                 contentDescription = "$agentName face",
-                modifier = Modifier.size(90.dp) // adjust image size as needed
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .size(90.dp) // adjust image size as needed
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(

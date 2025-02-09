@@ -3,6 +3,7 @@ package com.csaim.valorant_clutchguide
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -52,7 +53,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun home_screen(modifier: Modifier = Modifier) {
-    var searchTerm by remember { mutableStateOf("") }
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
     val instagram = "https://www.instagram.com/valorant_clutch_guide/"
@@ -142,48 +142,120 @@ fun home_screen(modifier: Modifier = Modifier) {
 
 
                 val navController = rememberNavController()
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color(0xFFBA3A46)) // Use the hex code directly
-                        .padding(top = 10.dp, bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
-                ) {
-                    Text(
-                        text = "Active Maps",
-                        color = Color.White,
-
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
+                var selectedTab by remember { mutableStateOf("home") } // Track selected tab
+                Column {
+                    Row(
                         modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                            .weight(1f) // Each Text gets equal space
-                            .clickable {
+                            .fillMaxWidth()
+                            .background(Color(0xFFBA3A46))
+                            .padding(top = 10.dp,
+//                                bottom = 16.dp
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable {
+                                    selectedTab = "home"
+                                    navController.navigate("home")
+                                },
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Active Maps",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(bottom = 16.dp)
 
-                                navController.navigate("home")
-                                       },
-                        textAlign = TextAlign.Center
-                    )
+                            )
 
-                    Text(
-                        text = "Other Maps",
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                            .weight(1f) // Each Text gets equal space
-                            .clickable { navController.navigate("details") },
-                        textAlign = TextAlign.Center
-                    )
+                            // Show the white bar below when selected
+                            if (selectedTab == "home") {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(1.dp)
+                                        .background(Color.White),
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable {
+                                    selectedTab = "details"
+                                    navController.navigate("details")
+                                },
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Other Maps",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(bottom = 16.dp)
+
+                            )
+
+                            // Show the white bar below when selected
+                            if (selectedTab == "details") {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(1.dp)
+                                        .background(Color.White)
+                                )
+                            }
+                        }
+                    }
                 }
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .background(Color(0xFFBA3A46)) // Use the hex code directly
+//                        .padding(top = 10.dp, bottom = 16.dp),
+//                    horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
+//                ) {
+//                    Text(
+//                        text = "Active Maps",
+//                        color = Color.White,
+//
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        modifier = Modifier
+//                            .padding(horizontal = 5.dp)
+//                            .weight(1f) // Each Text gets equal space
+//                            .clickable {
+//
+//                                navController.navigate("home")
+//                                       },
+//                        textAlign = TextAlign.Center
+//                    )
+//
+//                    Text(
+//                        text = "Other Maps",
+//                        color = Color.White,
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        modifier = Modifier
+//                            .padding(horizontal = 5.dp)
+//                            .weight(1f) // Each Text gets equal space
+//                            .clickable { navController.navigate("details") },
+//                        textAlign = TextAlign.Center
+//                    )
+//                }
 
                 // Navigation setup
                 NavHost(navController, startDestination = "home") {
                     composable("home") { ActiveMaps(navController) }
                     composable("details") { NonActiveMaps(navController) }
                 }
+
 
                 // NavController for navigating between screens
 
@@ -252,9 +324,7 @@ fun ActiveMaps(navController: NavController) {
                 }
             }
         }
-        Button(onClick = { navController.navigate("details") }) {
-            Text("Go to Details")
-        }
+
     }
 }
 
@@ -272,6 +342,7 @@ fun NonActiveMaps(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
+                .fillMaxSize()
 //                .padding(top = 13.dp)
         ) {
             items(maps) { mapName ->
@@ -279,6 +350,7 @@ fun NonActiveMaps(navController: NavController) {
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .fillMaxWidth()
+//                        .fillMaxHeight(),
                         .height(150.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -299,7 +371,9 @@ fun NonActiveMaps(navController: NavController) {
                                 else R.drawable.cypher
                             ), // Replace with your image resource
                             contentDescription = "Card background image",
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxSize(),
                             contentScale = ContentScale.Crop // Crop or fit the image as needed
                         )
                         Text(

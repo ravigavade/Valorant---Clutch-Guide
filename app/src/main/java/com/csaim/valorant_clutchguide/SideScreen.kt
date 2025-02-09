@@ -10,12 +10,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,9 +49,10 @@ class SideScreen : ComponentActivity() {
                     Card(
                         modifier = Modifier
                             .padding(16.dp)
-                            .fillMaxWidth()
+//                            .fillMaxWidth(),
                             .height(150.dp),
-
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         onClick = {( startActivity(Intent(this@SideScreen,AttackScreen::class.java)))}
 
                     ){
@@ -79,6 +83,8 @@ class SideScreen : ComponentActivity() {
                             .padding(16.dp)
                             .fillMaxWidth()
                             .height(150.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         onClick = {( startActivity(Intent(this@SideScreen,DefenseScreen::class.java)))}
 
 
