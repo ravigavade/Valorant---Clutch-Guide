@@ -2,6 +2,7 @@ package com.csaim.valorant_clutchguide
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +42,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray2
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
@@ -50,59 +54,60 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
+
+                // For API >= 23, change status bar text and icon color to white
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
                 home_screen()
             }
         }
     }
 }
-
 @Composable
 fun home_screen(modifier: Modifier = Modifier) {
+
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
     val instagram = "https://www.instagram.com/valorant_clutch_guide/"
 
     // This is the drawer
     ModalNavigationDrawer(
-        drawerState = DrawerState(if (drawerState)
-            DrawerValue.Open else DrawerValue.Closed),
+        drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
+        modifier = Modifier
+            .background(Color.Gray),
         drawerContent = {
 
             ModalDrawerSheet(
-                modifier = Modifier
-                    .width(250.dp)
+                modifier = Modifier.width(250.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-//                        .background(Color(0xFFBA3A46))
-                        .fillMaxSize()
                         .padding(8.dp),
-//                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-
                     Text(
                         "Valorant - Clutch Guide",
                         fontFamily = valo,
-
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(16.dp)
                     )
                     Divider()
+
+                    // Menu items
                     Row(
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
                     ) {
                         Card(
                             shape = RoundedCornerShape(5.dp),
-
-                            ) {
+                        ) {
                             Image(
                                 painter = painterResource(id = R.drawable.yt),
-                                contentDescription = "App Icon",
-                                modifier = Modifier
-                                    .size(50.dp),
+                                contentDescription = "Youtube Icon",
+                                modifier = Modifier.size(50.dp),
                                 contentScale = ContentScale.Crop
                             )
                         }
@@ -110,88 +115,64 @@ fun home_screen(modifier: Modifier = Modifier) {
                             "Youtube",
                             fontSize = 18.sp,
                             fontFamily = valo,
-
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .clickable {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
-                                }
-
+                            modifier = Modifier.padding(16.dp)
                         )
                     }
 
-                    Row {
+                    Row(
+                        modifier = Modifier
+                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
+                    ) {
                         Card(
                             shape = RoundedCornerShape(5.dp),
-
-                            ) {
+                        ) {
                             Image(
                                 painter = painterResource(id = R.drawable.insta),
-                                contentDescription = "App Icon",
-                                modifier = Modifier
-                                    .size(50.dp)
+                                contentDescription = "Instagram Icon",
+                                modifier = Modifier.size(50.dp)
                             )
                         }
                         Text(
                             "Instagram",
                             fontSize = 18.sp,
                             fontFamily = valo,
-
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .clickable {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
-                                }
-
+                            modifier = Modifier.padding(16.dp)
                         )
                     }
 
                     Row {
                         Card(
                             shape = RoundedCornerShape(5.dp),
-
-                            ) {
+                        ) {
                             Image(
                                 painter = painterResource(id = R.drawable.icon),
-                                contentDescription = "App Icon",
-                                modifier = Modifier
-                                    .size(50.dp)
+                                contentDescription = "About Us Icon",
+                                modifier = Modifier.size(50.dp)
                             )
                         }
                         Text(
                             "About us",
                             fontSize = 18.sp,
                             fontFamily = valo,
-
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .clickable { /* Handle Click */ }
+                            modifier = Modifier.padding(16.dp)
                         )
-
                     }
-
                 }
-
             }
         },
-        // Content of the screen
         content = {
             Column(
                 modifier = Modifier
-//                    .background(Color(0xFFFF4654)) //light color
-                    .background(Color(0xFFBA3A46)) //dark
-                    .fillMaxSize()
+                    .background(Color.Black) // Set the dark background
+//                    .fillMaxSize()
+//                    .height(400.dp)
                     .statusBarsPadding()
             ) {
+                // Top Menu Bar
                 Row(
                     modifier = Modifier.padding(end = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    // Header of the home screenh
                     IconButton(onClick = { drawerState = !drawerState }) {
                         Icon(
                             Icons.Filled.Menu,
@@ -199,38 +180,32 @@ fun home_screen(modifier: Modifier = Modifier) {
                             tint = Color.White
                         )
                     }
-//
-                    Spacer(
-                        modifier = Modifier
-                            .weight(1f)
-                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
                     Card(
                         shape = RoundedCornerShape(5.dp),
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.icon),
                             contentDescription = "App Icon",
-                            modifier = Modifier
-                                .size(50.dp)
+                            modifier = Modifier.size(50.dp)
                         )
                     }
-
                 }
 
-
-
                 val navController = rememberNavController()
-                var selectedTab by remember { mutableStateOf("home") } // Track selected tab
+                var selectedTab by remember { mutableStateOf("home") }
+
                 Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFFBA3A46))
-                            .padding(top = 16.dp,
-//                                bottom = 16.dp
-                            ),
+                            .background(Color.Black)
+                            .padding(top = 16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        // Home Tab
                         Column(
                             modifier = Modifier
                                 .weight(1f)
@@ -244,26 +219,21 @@ fun home_screen(modifier: Modifier = Modifier) {
                                 text = "Active Maps",
                                 color = Color.White,
                                 fontFamily = valo,
-
                                 fontSize = 20.sp,
-//                                fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(bottom = 16.dp)
-
+                                modifier = Modifier.padding(bottom = 16.dp)
                             )
-
-                            // Show the white bar below when selected
                             if (selectedTab == "home") {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(1.dp)
-                                        .background(Color.White),
+                                        .background(Color.White)
                                 )
                             }
                         }
 
+                        // Other Maps Tab
                         Column(
                             modifier = Modifier
                                 .weight(1f)
@@ -277,15 +247,10 @@ fun home_screen(modifier: Modifier = Modifier) {
                                 text = "Other Maps",
                                 color = Color.White,
                                 fontFamily = valo,
-
                                 fontSize = 20.sp,
-//                                fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(bottom = 16.dp)
-
                             )
-
-                            // Show the white bar below when selected
                             if (selectedTab == "details") {
                                 Box(
                                     modifier = Modifier
@@ -296,54 +261,15 @@ fun home_screen(modifier: Modifier = Modifier) {
                             }
                         }
                     }
+
                 }
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .background(Color(0xFFBA3A46)) // Use the hex code directly
-//                        .padding(top = 10.dp, bottom = 16.dp),
-//                    horizontalArrangement = Arrangement.SpaceBetween // This adds space between the Texts
-//                ) {
-//                    Text(
-//                        text = "Active Maps",
-//                        color = Color.White,
-//
-//                        fontSize = 20.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        modifier = Modifier
-//                            .padding(horizontal = 5.dp)
-//                            .weight(1f) // Each Text gets equal space
-//                            .clickable {
-//
-//                                navController.navigate("home")
-//                                       },
-//                        textAlign = TextAlign.Center
-//                    )
-//
-//                    Text(
-//                        text = "Other Maps",
-//                        color = Color.White,
-//                        fontSize = 20.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        modifier = Modifier
-//                            .padding(horizontal = 5.dp)
-//                            .weight(1f) // Each Text gets equal space
-//                            .clickable { navController.navigate("details") },
-//                        textAlign = TextAlign.Center
-//                    )
-//                }
+
 
                 // Navigation setup
                 NavHost(navController, startDestination = "home") {
                     composable("home") { ActiveMaps(navController) }
                     composable("details") { NonActiveMaps(navController) }
                 }
-
-
-                // NavController for navigating between screens
-
-
-
             }
         }
     )
@@ -356,16 +282,11 @@ fun ActiveMaps(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .background(Color(0xFFFF4654)) // Use the hex code directly
+            .background(DarkBlueGray)
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-//                .padding(top = 13.dp)
-//                .background(Color.White)
-        ) {
+        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
             items(maps) { mapName ->
                 Card(
                     modifier = Modifier
@@ -384,31 +305,31 @@ fun ActiveMaps(navController: NavController) {
                     ) {
                         Image(
                             painter = painterResource(
-                                if(mapName == "Bind") R.drawable.bind
-                                else if(mapName == "Fracture") R.drawable.fracture
-                                else if(mapName == "Haven") R.drawable.haven
-                                else if(mapName == "Pearl") R.drawable.pearl
-                                else if(mapName == "Split") R.drawable.split
-                                else if(mapName == "Lotus") R.drawable.lotus
-                                else if(mapName == "Abyss") R.drawable.abyss
-                                else R.drawable.cypher
-                            ), // Replace with your image resource
+                                when (mapName) {
+                                    "Bind" -> R.drawable.bind
+                                    "Fracture" -> R.drawable.fracture
+                                    "Haven" -> R.drawable.haven
+                                    "Pearl" -> R.drawable.pearl
+                                    "Split" -> R.drawable.split
+                                    "Lotus" -> R.drawable.lotus
+                                    "Abyss" -> R.drawable.abyss
+                                    else -> R.drawable.cypher
+                                }
+                            ),
                             contentDescription = "Card background image",
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop // Crop or fit the image as needed
+                            contentScale = ContentScale.Crop
                         )
                         Text(
                             text = mapName,
                             fontFamily = valo,
                             color = Color.White,
-                            fontSize = 24.sp,
-//                            fontWeight = FontWeight.Bold
+                            fontSize = 24.sp
                         )
                     }
                 }
             }
         }
-
     }
 }
 
@@ -419,22 +340,16 @@ fun NonActiveMaps(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .background(Color(0xFFFF4654)) // Use the hex code directly
+            .background(DarkBlueGray2)
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally)
-    {
-        LazyColumn(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxSize()
-//                .padding(top = 13.dp)
-        ) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
             items(maps) { mapName ->
                 Card(
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(top = 16.dp)
                         .fillMaxWidth()
-//                        .fillMaxHeight(),
                         .height(150.dp),
                     shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -448,25 +363,23 @@ fun NonActiveMaps(navController: NavController) {
                     ) {
                         Image(
                             painter = painterResource(
-                                if(mapName == "Ascent") R.drawable.ascent
-                                else if(mapName == "Breeze") R.drawable.breeze
-                                else if(mapName == "Icebox") R.drawable.icebox
-                                else if(mapName == "Sunset") R.drawable.sunset
-                                else R.drawable.cypher
-                            ), // Replace with your image resource
+                                when (mapName) {
+                                    "Ascent" -> R.drawable.ascent
+                                    "Breeze" -> R.drawable.breeze
+                                    "Icebox" -> R.drawable.icebox
+                                    "Sunset" -> R.drawable.sunset
+                                    else -> R.drawable.cypher
+                                }
+                            ),
                             contentDescription = "Card background image",
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxSize(),
-                            contentScale = ContentScale.Crop // Crop or fit the image as needed
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
                         Text(
                             text = mapName,
                             fontFamily = valo,
-
                             color = Color.White,
-                            fontSize = 24.sp,
-//                            fontWeight = FontWeight.Bold
+                            fontSize = 24.sp
                         )
                     }
                 }
@@ -474,7 +387,3 @@ fun NonActiveMaps(navController: NavController) {
         }
     }
 }
-
-
-
-

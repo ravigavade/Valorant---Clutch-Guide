@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -41,7 +42,7 @@ class SideScreen : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .background(Color(0xFFBA3A46))
+                        .background(DarkBlueGray)
                         .fillMaxSize()
 
                 ) {

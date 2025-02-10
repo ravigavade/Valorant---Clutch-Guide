@@ -1,7 +1,9 @@
 package com.csaim.valorant_clutchguide
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
@@ -32,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 
 class AttackScreen : ComponentActivity() {
@@ -40,7 +44,8 @@ class AttackScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-               whichScreen()
+
+                whichScreen()
             }
         }
     }
@@ -51,7 +56,7 @@ fun whichScreen(modifier: Modifier = Modifier) {
 
     Column(
         modifier = Modifier
-            .background(Color(0xFFBA3A46))
+            .background(DarkBlueGray)
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,

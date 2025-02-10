@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -44,7 +45,7 @@ class AgentScreen : ComponentActivity() {
             ValorantClutchGuideTheme {
                 Column(
                     modifier = Modifier
-                        .background(Color(0xFFFF4654))
+                        .background(Color.Black)
                         .statusBarsPadding()
                         .fillMaxSize()
                 ) {
@@ -77,7 +78,7 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFBA3A46)
+            containerColor = DarkBlueGray
         ),
         onClick = onClick,
     ) {
@@ -101,7 +102,7 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
                 text = agentName,
                 fontFamily = valo,
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 13.sp,
 //                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
             )
         }
