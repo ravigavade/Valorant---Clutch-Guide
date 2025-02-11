@@ -9,6 +9,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 
+
 class VideoManager {
     private val okHttpClient: OkHttpClient
 
@@ -20,7 +21,7 @@ class VideoManager {
         okHttpClient = builder.build()
     }
 
-    suspend fun retrieveVideos(): List<String> = withContext(Dispatchers.IO) {
+    suspend fun retrieveVideos(): List<VideoData> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
             .url("https://csaimgod.pythonanywhere.com/videos/kj/atkSide/siteB")
             .get()
@@ -32,13 +33,15 @@ class VideoManager {
             val responseBody = response.body?.string()
             val jsonObject = JSONObject(responseBody ?: "{}")
 
-            // Extract video URLs from JSON array
-            val videoList = mutableListOf<String>()
+            val videoList = mutableListOf<VideoData>()
             val videosArray = jsonObject.optJSONArray("videos")
 
             if (videosArray != null) {
                 for (i in 0 until videosArray.length()) {
-                    videoList.add(videosArray.getString(i))
+                    val videoObject = videosArray.getJSONObject(i)
+                    val name = videoObject.optString("name", "Untitled Video")
+                    val url = videoObject.optString("url", "")
+                    videoList.add(VideoData(name, url))
                 }
             }
 

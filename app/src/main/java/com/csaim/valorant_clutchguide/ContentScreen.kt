@@ -2,6 +2,7 @@ package com.csaim.valorant_clutchguide
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButtonDefaults.elevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -46,35 +48,49 @@ class ContentScreen : ComponentActivity() {
 
 @Composable
 fun VideoScreen() {
-    var videoUrls by remember { mutableStateOf<List<String>>(emptyList()) }
+    var videoList by remember { mutableStateOf<List<VideoData>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    var isError by remember { mutableStateOf(false) }
     val videoManager = VideoManager()
 
+    // Fetch videos asynchronously
     LaunchedEffect(Unit) {
-        videoUrls = videoManager.retrieveVideos()
-        isLoading = false
+        try {
+            videoList = videoManager.retrieveVideos()
+            isError = videoList.isEmpty()
+        } catch (e: Exception) {
+            Log.e("Video Fetch", "Error fetching videos", e)
+            isError = true
+        } finally {
+            isLoading = false
+        }
     }
 
     if (isLoading) {
-        Text("Loading...")
-    } else if (videoUrls.isEmpty()) {
-        Text("No videos found.")
+        // Show loading indicator while fetching
+        Text("Loading videos...", color = Color.White)
+//        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    } else if (isError) {
+        // Show error message if the fetch fails
+        Text("Failed to load videos. Please try again.", color = Color.Red)
     } else {
+        // Display the videos if available
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            items(videoUrls) { videoUrl ->
-                VideoCard(videoUrl)
+            items(videoList) { video ->
+                VideoCard(video)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
 }
 
+
 @Composable
-fun VideoCard(videoUrl: String) {
+fun VideoCard(video: VideoData) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,20 +102,27 @@ fun VideoCard(videoUrl: String) {
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Video", color = Color.White, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = video.name, // Now this should work as the 'name' property exists
+                color = Color.White,
+                style = MaterialTheme.typography.bodyLarge
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            VideoPlayer(videoUrl)
+            VideoPlayer(video.url)
         }
     }
 }
 
 
 
+
+
+
 @Composable
 fun VideoPlayer(videoUrl: String) {
-    // Use ExoPlayer to play the video
+    // Remember the ExoPlayer instance to avoid reinitialization on recomposition
     val context = LocalContext.current
-    val exoPlayer = remember {
+    val exoPlayer = remember(videoUrl) {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(videoUrl))
             prepare()
