@@ -35,67 +35,68 @@ class ContentScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-                VideoPlayerScreen()
+
+                VideoScreen()
             }
         }
     }
 }
 
 @Composable
-fun VideoPlayerScreen() {
+fun VideoScreen() {
+    var videoUrl by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
+    val videoManager = VideoManager()
+
+    // Launch the coroutine when the composable is composed
+    LaunchedEffect(Unit) {
+        isLoading = true
+        // Fetch video URL from the API
+        videoUrl = videoManager.retrieveVideo()
+        isLoading = false
+    }
+
+    // Show loading spinner or display the video
+    if (isLoading) {
+        // You can show a loading indicator
+        Text("Loading...")
+    } else {
+        if (videoUrl != null) {
+            VideoPlayer(videoUrl = videoUrl!!)
+        } else {
+            // Handle error if video URL is null
+            Text("Failed to fetch video.")
+        }
+    }
+}
+
+@Composable
+fun VideoPlayer(videoUrl: String) {
+    // Use ExoPlayer to play the video
     val context = LocalContext.current
-    val videoUri = "android.resource://${context.packageName}/raw/samplevideo" // Change 'video' to your file name
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Gray)
-//            .padding(16.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-
-        Card(
-            modifier = Modifier
-                //            .fillMaxWidth()
-                .padding(16.dp),
-            shape = MaterialTheme.shapes.medium, // Rounds the corners of the card
-            colors = CardDefaults.cardColors(containerColor = Color.Gray) // Card color
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
-
-                val exoPlayer = remember {
-                    ExoPlayer.Builder(context).build().apply {
-                        setMediaItem(MediaItem.fromUri(Uri.parse(videoUri)))
-                        prepare()
-                        playWhenReady = true
-                    }
-                }
-
-                // Clean up player when the screen is disposed
-                DisposableEffect(context) {
-                    onDispose {
-                        exoPlayer.release()
-                    }
-                }
-
-                AndroidView(
-                    factory = { ctx ->
-                        PlayerView(ctx).apply {
-                            player = exoPlayer
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-//                        .height(250.dp)
-
-                )
-
-            }
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(videoUrl))
+            prepare()
         }
     }
 
+    // Use PlayerView to display the video
+    AndroidView(
+        factory = { context ->
+            PlayerView(context).apply {
+                player = exoPlayer
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp) // Set a fixed height for video player
+    )
+
+    // Free resources when the composable is disposed
+    DisposableEffect(Unit) {
+        onDispose {
+            exoPlayer.release()
+        }
+    }
 }
