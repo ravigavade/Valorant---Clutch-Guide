@@ -187,7 +187,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(5.dp),
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.icon),
+                            painter = painterResource(id = R.drawable.logo),
                             contentDescription = "App Icon",
                             modifier = Modifier.size(50.dp)
                         )
