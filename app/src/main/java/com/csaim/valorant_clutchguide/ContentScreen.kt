@@ -100,9 +100,3 @@ fun VideoPlayer(videoUrl: String) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewVideoScreen() {
-//    VideoScreen()
-//}
