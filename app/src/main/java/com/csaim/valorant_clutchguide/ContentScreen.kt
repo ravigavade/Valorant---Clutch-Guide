@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButtonDefaults.elevation
@@ -44,31 +46,54 @@ class ContentScreen : ComponentActivity() {
 
 @Composable
 fun VideoScreen() {
-    var videoUrl by remember { mutableStateOf<String?>(null) }
-    var isLoading by remember { mutableStateOf(false) }
+    var videoUrls by remember { mutableStateOf<List<String>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     val videoManager = VideoManager()
 
-    // Launch the coroutine when the composable is composed
     LaunchedEffect(Unit) {
-        isLoading = true
-        // Fetch video URL from the API
-        videoUrl = videoManager.retrieveVideo()
+        videoUrls = videoManager.retrieveVideos()
         isLoading = false
     }
 
-    // Show loading spinner or display the video
     if (isLoading) {
-        // You can show a loading indicator
         Text("Loading...")
+    } else if (videoUrls.isEmpty()) {
+        Text("No videos found.")
     } else {
-        if (videoUrl != null) {
-            VideoPlayer(videoUrl = videoUrl!!)
-        } else {
-            // Handle error if video URL is null
-            Text("Failed to fetch video.")
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            items(videoUrls) { videoUrl ->
+                VideoCard(videoUrl)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
+
+@Composable
+fun VideoCard(videoUrl: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Video", color = Color.White, style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(8.dp))
+            VideoPlayer(videoUrl)
+        }
+    }
+}
+
+
 
 @Composable
 fun VideoPlayer(videoUrl: String) {

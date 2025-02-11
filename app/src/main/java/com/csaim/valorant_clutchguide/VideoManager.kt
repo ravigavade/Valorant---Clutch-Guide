@@ -20,23 +20,32 @@ class VideoManager {
         okHttpClient = builder.build()
     }
 
-    suspend fun retrieveVideo(): String? = withContext(Dispatchers.IO) {
+    suspend fun retrieveVideos(): List<String> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
-            .url("https://csaimgod.pythonanywhere.com/videos/kj/kjBindBcontainer.mp4")
+            .url("https://csaimgod.pythonanywhere.com/videos/kj/atkSide/siteB")
             .get()
             .build()
 
         val response: Response = okHttpClient.newCall(request).execute()
 
         if (response.isSuccessful) {
-            // Assuming the video is directly returned and not wrapped in a JSON
-            val videoUrl = response.request.url.toString()  // Get the direct URL of the video
-            return@withContext videoUrl
+            val responseBody = response.body?.string()
+            val jsonObject = JSONObject(responseBody ?: "{}")
+
+            // Extract video URLs from JSON array
+            val videoList = mutableListOf<String>()
+            val videosArray = jsonObject.optJSONArray("videos")
+
+            if (videosArray != null) {
+                for (i in 0 until videosArray.length()) {
+                    videoList.add(videosArray.getString(i))
+                }
+            }
+
+            return@withContext videoList
         } else {
-            Log.e("Video Fetch", "Failed to fetch video")
-            return@withContext null
+            Log.e("Video Fetch", "Failed to fetch videos")
+            return@withContext emptyList()
         }
     }
-
-
 }
