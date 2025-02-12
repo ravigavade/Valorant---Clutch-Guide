@@ -163,7 +163,7 @@ fun VideoScreen() {
             items(videoList) { video ->
                 VideoCard(video)
 //                Spacer(modifier = Modifier.height(16.dp))
-//                Divider()
+//                Divider()// Add a divider between videos
             }
         }
     }
