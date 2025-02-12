@@ -7,16 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -36,33 +28,62 @@ class SideScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Retrieve the selected map and agent from the previous screen
+        val selectedMap = intent.getStringExtra("mapName") ?: "Unknown Map"
+        val selectedAgent = intent.getStringExtra("agentName") ?: "Unknown Agent"
+
         setContent {
             ValorantClutchGuideTheme {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .background(DarkBlueGray)
                         .fillMaxSize()
-
+                        .padding(16.dp)
                 ) {
+                    // Display the map and agent at the top of the screen
+                    Text(
+                        text = "Map: $selectedMap",
+                        fontFamily = valo,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Agent: $selectedAgent",
+                        fontFamily = valo,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    //Attackers
+                    // Attackers Card
                     Card(
                         modifier = Modifier
-                            .padding(16.dp)
-//                            .fillMaxWidth(),
+                            .padding(vertical = 8.dp)
+                            .fillMaxWidth()
                             .height(150.dp),
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        onClick = {( startActivity(Intent(this@SideScreen,AttackScreen::class.java)))}
-
-                    ){
+                        onClick = {
+                            // Pass along the map, agent, and side information
+                            startActivity(
+                                Intent(this@SideScreen, AttackScreen::class.java).apply {
+                                    putExtra("mapName", selectedMap)
+                                    putExtra("agentName", selectedAgent)
+                                    putExtra("side", "Attacker")
+                                }
+                            )
+                        }
+                    ) {
                         Box(
-                            modifier = Modifier.fillMaxSize(), // Make the Box fill the whole Card
-                            contentAlignment = Alignment.Center // Center the content inside the Box
-
-                        ){
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Image(
                                 painter = painterResource(R.drawable.attackersside),
                                 contentDescription = "Attackers Side",
@@ -74,54 +95,53 @@ class SideScreen : ComponentActivity() {
                                 color = Color.White,
                                 fontSize = 24.sp,
                                 fontFamily = valo,
-
                                 fontWeight = FontWeight.Bold
                             )
                         }
-
                     }
 
-                    //defenders
+                    // Defenders Card
                     Card(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(vertical = 8.dp)
                             .fillMaxWidth()
                             .height(150.dp),
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        onClick = {( startActivity(Intent(this@SideScreen,DefenseScreen::class.java)))}
-
-
-                    ){
+                        onClick = {
+                            // Pass along the map, agent, and side information
+                            startActivity(
+                                Intent(this@SideScreen, DefenseScreen::class.java).apply {
+                                    putExtra("mapName", selectedMap)
+                                    putExtra("agentName", selectedAgent)
+                                    putExtra("side", "Defender")
+                                }
+                            )
+                        }
+                    ) {
                         Box(
-                            modifier = Modifier.fillMaxSize(), // Make the Box fill the whole Card
-                            contentAlignment = Alignment.Center // Center the content inside the Box
-
-                        ){
-
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Image(
                                 painter = painterResource(R.drawable.defendersside),
-                                contentDescription = "Attackers Side",
+                                contentDescription = "Defenders Side",
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                             Text(
                                 text = "Defender's Side",
                                 fontFamily = valo,
-
                                 color = Color.White,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
-
                     }
-
-
-
                 }
             }
         }
     }
 }
+
 

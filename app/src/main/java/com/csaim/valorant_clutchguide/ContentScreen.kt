@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -47,11 +49,73 @@ class ContentScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Retrieve accumulated extras from previous screens
+        val selectedMap = intent.getStringExtra("mapName") ?: "Unknown Map"
+        val selectedAgent = intent.getStringExtra("agentName") ?: "Unknown Agent"
+        val selectedSide = intent.getStringExtra("side") ?: "Unknown Side"
+        val selectedSite = intent.getStringExtra("site") ?: "Unknown Site"
+
         setContent {
             ValorantClutchGuideTheme {
-
-                VideoScreen()
+                ContentScreenContent(
+                    selectedMap = selectedMap,
+                    selectedAgent = selectedAgent,
+                    selectedSide = selectedSide,
+                    selectedSite = selectedSite
+                )
             }
+        }
+    }
+}
+
+@Composable
+fun ContentScreenContent(
+    selectedMap: String,
+    selectedAgent: String,
+    selectedSide: String,
+    selectedSite: String
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Header displaying the accumulated selections
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Black)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Map: $selectedMap",
+                fontFamily = valo,
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Agent: $selectedAgent",
+                fontFamily = valo,
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Side: $selectedSide",
+                fontFamily = valo,
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Site: $selectedSite",
+                fontFamily = valo,
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        // Video list area; using Box with weight(1f) so it takes the remaining space.
+        Box(modifier = Modifier.weight(1f)) {
+            VideoScreen()
         }
     }
 }
@@ -77,14 +141,17 @@ fun VideoScreen() {
     }
 
     if (isLoading) {
-        // Show loading indicator while fetching
-        Text("Loading videos...", color = Color.White)
-//        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        // Show a loading message or indicator
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Loading videos...", color = Color.White)
+        }
     } else if (isError) {
-        // Show error message if the fetch fails
-        Text("Failed to load videos. Please try again.", color = Color.Red)
+        // Show an error message if the fetch fails
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Failed to load videos. Please try again.", color = Color.Red)
+        }
     } else {
-        // Display the videos if available
+        // Display the videos in a scrollable list
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -101,7 +168,6 @@ fun VideoScreen() {
         }
     }
 }
-
 
 @Composable
 fun VideoCard(video: VideoData, modifier: Modifier = Modifier) {
@@ -122,7 +188,7 @@ fun VideoCard(video: VideoData, modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = video.name,
-                modifier.padding(top = 8.dp),
+//                modifier.padding(top = 8.dp),
                 color = Color.White,
                 fontSize = 18.sp,
                 fontFamily = valo,
@@ -132,11 +198,11 @@ fun VideoCard(video: VideoData, modifier: Modifier = Modifier) {
     }
 }
 
-
 @OptIn(UnstableApi::class)
 @Composable
 fun VideoPlayer(videoUrl: String, weight: Modifier) {
     // Remember the ExoPlayer instance to avoid reinitialization on recomposition
+
     val context = LocalContext.current
     val exoPlayer = remember(videoUrl) {
         ExoPlayer.Builder(context).build().apply {
@@ -145,7 +211,7 @@ fun VideoPlayer(videoUrl: String, weight: Modifier) {
         }
     }
 
-    // Use PlayerView to display the video
+    // Use AndroidView to integrate the PlayerView
     AndroidView(
         factory = { context ->
             PlayerView(context).apply {
@@ -171,6 +237,7 @@ fun VideoPlayer(videoUrl: String, weight: Modifier) {
 
 
     // Free resources when the composable is disposed
+
     DisposableEffect(Unit) {
         onDispose {
             exoPlayer.release()

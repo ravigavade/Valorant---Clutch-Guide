@@ -1,79 +1,101 @@
 package com.csaim.valorant_clutchguide
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
+import com.csaim.valorant_clutchguide.ui.theme.valo
 
 class AttackScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Retrieve extras passed from SideScreen
+        val selectedMap = intent.getStringExtra("mapName") ?: "Unknown Map"
+        val selectedAgent = intent.getStringExtra("agentName") ?: "Unknown Agent"
+        val selectedSide = intent.getStringExtra("side") ?: "Unknown Side"
+
         setContent {
             ValorantClutchGuideTheme {
-
-                whichScreen()
+                AttackScreenContent(
+                    selectedMap = selectedMap,
+                    selectedAgent = selectedAgent,
+                    selectedSide = selectedSide
+                )
             }
         }
     }
 }
 
 @Composable
-fun whichScreen(modifier: Modifier = Modifier) {
-
+fun AttackScreenContent(selectedMap: String, selectedAgent: String, selectedSide: String) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .background(DarkBlueGray)
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+            .padding(16.dp)
     ) {
+        // Header: display the selected map, agent, and side at the top
+        Text(
+            text = "Map: $selectedMap",
+            fontFamily = valo,
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "Agent: $selectedAgent",
+            fontFamily = valo,
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "Side: $selectedSide",
+            fontFamily = valo,
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        val context = LocalContext.current
-        //site a card
+        // Site A Card
         Card(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .weight(1f)
                 .height(150.dp),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             onClick = {
-                context.startActivity(Intent(context, ContentScreen::class.java))
+                context.startActivity(Intent(context, ContentScreen::class.java).apply {
+                    putExtra("mapName", selectedMap)
+                    putExtra("agentName", selectedAgent)
+                    putExtra("side", selectedSide)
+                    putExtra("site", "Site A")
+                })
             }
         ) {
             Box(
@@ -81,34 +103,35 @@ fun whichScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(
-                       R.drawable.abyss
-                    ), // Replace with your image resource
-                    contentDescription = "Card background image",
+                    painter = painterResource(R.drawable.abyss), // Replace with your actual image resource for Site A
+                    contentDescription = "Site A",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop // Crop or fit the image as needed
+                    contentScale = ContentScale.Crop
                 )
                 Text(
                     text = "Site A",
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = valo,
                 )
             }
         }
 
-        //site B card
+        // Site B Card
         Card(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .weight(1f)
-
                 .height(150.dp),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             onClick = {
-                context.startActivity(Intent(context, ContentScreen::class.java))
+                context.startActivity(Intent(context, ContentScreen::class.java).apply {
+                    putExtra("mapName", selectedMap)
+                    putExtra("agentName", selectedAgent)
+                    putExtra("side", selectedSide)
+                    putExtra("site", "Site B")
+                })
             }
         ) {
             Box(
@@ -116,36 +139,35 @@ fun whichScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(
-                        R.drawable.fade
-                    ), // Replace with your image resource
-                    contentDescription = "Card background image",
+                    painter = painterResource(R.drawable.fade), // Replace with your actual image resource for Site B
+                    contentDescription = "Site B",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop // Crop or fit the image as needed
+                    contentScale = ContentScale.Crop
                 )
                 Text(
                     text = "Site B",
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = valo,
                 )
             }
-
         }
 
-        //mid card
-
+        // Mid Card
         Card(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
-                .weight(1f)
-
                 .height(150.dp),
             shape = RoundedCornerShape(12.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             onClick = {
-                context.startActivity(Intent(context, ContentScreen::class.java))
+                context.startActivity(Intent(context, ContentScreen::class.java).apply {
+                    putExtra("mapName", selectedMap)
+                    putExtra("agentName", selectedAgent)
+                    putExtra("side", selectedSide)
+                    putExtra("site", "Mid")
+                })
             }
         ) {
             Box(
@@ -153,22 +175,20 @@ fun whichScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(
-                        R.drawable.astra
-                    ), // Replace with your image resource
-                    contentDescription = "Card background image",
+                    painter = painterResource(R.drawable.astra), // Replace with your actual image resource for Mid
+                    contentDescription = "Mid",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop // Crop or fit the image as needed
+                    contentScale = ContentScale.Crop
                 )
                 Text(
                     text = "Mid",
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = valo,
                 )
             }
         }
     }
-
 }
+
 
