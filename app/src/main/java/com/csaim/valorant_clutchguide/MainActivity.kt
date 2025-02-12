@@ -278,7 +278,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 @Composable
 fun ActiveMaps(navController: NavController) {
     val context = LocalContext.current
-    val maps = listOf("Bind", "Fracture", "Haven", "Pearl", "Split", "Lotus", "Abyss")
+    val maps = listOf("Abyss","Pearl","Fracture","Split", "Haven", "Lotus","Bind")
 
     Column(
         modifier = Modifier
@@ -306,13 +306,13 @@ fun ActiveMaps(navController: NavController) {
                         Image(
                             painter = painterResource(
                                 when (mapName) {
-                                    "Bind" -> R.drawable.bind
-                                    "Fracture" -> R.drawable.fracture
-                                    "Haven" -> R.drawable.haven
-                                    "Pearl" -> R.drawable.pearl
-                                    "Split" -> R.drawable.split
-                                    "Lotus" -> R.drawable.lotus
                                     "Abyss" -> R.drawable.abyss
+                                    "Pearl" -> R.drawable.pearl
+                                    "Fracture" -> R.drawable.fracture
+                                    "Split" -> R.drawable.split
+                                    "Bind" -> R.drawable.bind
+                                    "Haven" -> R.drawable.haven
+                                    "Lotus" -> R.drawable.lotus
                                     else -> R.drawable.cypher
                                 }
                             ),
@@ -335,7 +335,7 @@ fun ActiveMaps(navController: NavController) {
 
 @Composable
 fun NonActiveMaps(navController: NavController) {
-    val maps = listOf("Ascent", "Breeze", "Icebox", "Sunset")
+    val maps = listOf("Breeze","Icebox","Ascent", "Sunset")
     val context = LocalContext.current
 
     Column(

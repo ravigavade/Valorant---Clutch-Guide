@@ -48,7 +48,10 @@ class AgentScreen : ComponentActivity() {
                         .background(Color.Black)
                         .statusBarsPadding()
                         .fillMaxSize()
+
                 ) {
+
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "Killjoy", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
                     LazyVerticalGrid(
@@ -56,7 +59,9 @@ class AgentScreen : ComponentActivity() {
                             .padding(horizontal = 7.dp),
                         columns = GridCells.Fixed(3)
                     ) {
+
                         items(agents) { agentName ->
+
                             AgentCard(agentName = agentName, onClick = {
                                 startActivity(Intent(this@AgentScreen, SideScreen::class.java))
                             })
