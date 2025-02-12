@@ -19,7 +19,9 @@
             android:name=".ContentScreen"
             android:exported="false"
             android:label="@string/title_activity_content_screen"
-            android:theme="@style/Theme.ValorantClutchGuide" />
+            android:theme="@style/Theme.ValorantClutchGuide" >
+
+        </activity>
         <activity
             android:name=".AgentScreen"
             android:exported="false"
@@ -50,6 +52,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
