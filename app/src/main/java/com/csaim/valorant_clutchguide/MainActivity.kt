@@ -46,7 +46,6 @@ import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray2
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +53,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-
                 // For API >= 23, change status bar text and icon color to white
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -64,9 +62,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun home_screen(modifier: Modifier = Modifier) {
-
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
     val instagram = "https://www.instagram.com/valorant_clutch_guide/"
@@ -74,17 +72,15 @@ fun home_screen(modifier: Modifier = Modifier) {
     // This is the drawer
     ModalNavigationDrawer(
         drawerState = DrawerState(if (drawerState) DrawerValue.Open else DrawerValue.Closed),
-        modifier = Modifier
-            .background(Color.Gray),
+        modifier = Modifier.background(Color.Gray),
         drawerContent = {
-
             ModalDrawerSheet(
                 modifier = Modifier.width(250.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(8.dp)
                 ) {
                     Text(
                         "Valorant - Clutch Guide",
@@ -164,8 +160,6 @@ fun home_screen(modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .background(Color.Black) // Set the dark background
-//                    .fillMaxSize()
-//                    .height(400.dp)
                     .statusBarsPadding()
             ) {
                 // Top Menu Bar
@@ -180,9 +174,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                             tint = Color.White
                         )
                     }
-
                     Spacer(modifier = Modifier.weight(1f))
-
                     Card(
                         shape = RoundedCornerShape(5.dp),
                     ) {
@@ -261,9 +253,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                             }
                         }
                     }
-
                 }
-
 
                 // Navigation setup
                 NavHost(navController, startDestination = "home") {
@@ -296,7 +286,11 @@ fun ActiveMaps(navController: NavController) {
                     shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
-                        context.startActivity(Intent(context, AgentScreen::class.java))
+                        // Pass the selected map to AgentScreen using an extra
+                        val intent = Intent(context, AgentScreen::class.java).apply {
+                            putExtra("mapName", mapName)
+                        }
+                        context.startActivity(intent)
                     }
                 ) {
                     Box(
@@ -354,7 +348,11 @@ fun NonActiveMaps(navController: NavController) {
                     shape = RoundedCornerShape(8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
-                        context.startActivity(Intent(context, AgentScreen::class.java))
+                        // Pass the selected map to AgentScreen using an extra
+                        val intent = Intent(context, AgentScreen::class.java).apply {
+                            putExtra("mapName", mapName)
+                        }
+                        context.startActivity(intent)
                     }
                 ) {
                     Box(
