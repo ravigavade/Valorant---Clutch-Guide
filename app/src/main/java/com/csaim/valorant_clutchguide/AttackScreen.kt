@@ -56,6 +56,7 @@ fun AttackScreenContent(selectedMap: String, selectedAgent: String, selectedSide
             .background(DarkBlueGray)
             .fillMaxSize()
             .padding(16.dp)
+            .statusBarsPadding()
     ) {
         // Header: display the selected map, agent, and side at the top
         Text(

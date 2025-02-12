@@ -40,6 +40,7 @@ class SideScreen : ComponentActivity() {
                         .background(DarkBlueGray)
                         .fillMaxSize()
                         .padding(16.dp)
+                        .statusBarsPadding()
                 ) {
                     // Display the map and agent at the top of the screen
                     Text(
