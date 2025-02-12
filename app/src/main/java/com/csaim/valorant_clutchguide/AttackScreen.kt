@@ -94,7 +94,7 @@ fun AttackScreenContent(selectedMap: String, selectedAgent: String, selectedSide
                     putExtra("mapName", selectedMap)
                     putExtra("agentName", selectedAgent)
                     putExtra("side", selectedSide)
-                    putExtra("site", "Site A")
+                    putExtra("site", "siteA")
                 })
             }
         ) {
@@ -130,7 +130,7 @@ fun AttackScreenContent(selectedMap: String, selectedAgent: String, selectedSide
                     putExtra("mapName", selectedMap)
                     putExtra("agentName", selectedAgent)
                     putExtra("side", selectedSide)
-                    putExtra("site", "Site B")
+                    putExtra("site", "siteB")
                 })
             }
         ) {

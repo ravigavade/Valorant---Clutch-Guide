@@ -115,13 +115,13 @@ fun ContentScreenContent(
         }
         // Video list area; using Box with weight(1f) so it takes the remaining space.
         Box(modifier = Modifier.weight(1f)) {
-            VideoScreen()
+            VideoScreen(selectedSite)
         }
     }
 }
 
 @Composable
-fun VideoScreen() {
+fun VideoScreen(siteA: String) {
     var videoList by remember { mutableStateOf<List<VideoData>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
@@ -130,7 +130,7 @@ fun VideoScreen() {
     // Fetch videos asynchronously
     LaunchedEffect(Unit) {
         try {
-            videoList = videoManager.retrieveVideos()
+            videoList = videoManager.retrieveVideos(siteA)
             isError = videoList.isEmpty()
         } catch (e: Exception) {
             Log.e("Video Fetch", "Error fetching videos", e)
@@ -163,7 +163,7 @@ fun VideoScreen() {
             items(videoList) { video ->
                 VideoCard(video)
 //                Spacer(modifier = Modifier.height(16.dp))
-//                Divider()// Add a divider between videos
+//                Divider()//
             }
         }
     }
