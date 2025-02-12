@@ -268,7 +268,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 @Composable
 fun ActiveMaps(navController: NavController) {
     val context = LocalContext.current
-    val maps = listOf("Abyss","Pearl","Fracture","Split", "Haven", "Lotus","Bind")
+    val maps = listOf("Abyss","Pearl","Fracture","Split", "Haven", "Lotus","bind")
 
     Column(
         modifier = Modifier
@@ -304,7 +304,7 @@ fun ActiveMaps(navController: NavController) {
                                     "Pearl" -> R.drawable.pearl
                                     "Fracture" -> R.drawable.fracture
                                     "Split" -> R.drawable.split
-                                    "Bind" -> R.drawable.bind
+                                    "bind" -> R.drawable.bind
                                     "Haven" -> R.drawable.haven
                                     "Lotus" -> R.drawable.lotus
                                     else -> R.drawable.cypher

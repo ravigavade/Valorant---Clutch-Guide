@@ -115,13 +115,23 @@ fun ContentScreenContent(
         }
         // Video list area; using Box with weight(1f) so it takes the remaining space.
         Box(modifier = Modifier.weight(1f)) {
-            VideoScreen(selectedSite)
+            VideoScreen(
+                selectedMap,
+                selectedAgent,
+                selectedSide,
+                selectedSite
+            )
         }
     }
 }
 
 @Composable
-fun VideoScreen(siteA: String) {
+fun VideoScreen(
+    map: String,
+    agent:String,
+    side:String,
+    site: String
+) {
     var videoList by remember { mutableStateOf<List<VideoData>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
@@ -130,7 +140,7 @@ fun VideoScreen(siteA: String) {
     // Fetch videos asynchronously
     LaunchedEffect(Unit) {
         try {
-            videoList = videoManager.retrieveVideos(siteA)
+            videoList = videoManager.retrieveVideos(map,agent,side,site)
             isError = videoList.isEmpty()
         } catch (e: Exception) {
             Log.e("Video Fetch", "Error fetching videos", e)

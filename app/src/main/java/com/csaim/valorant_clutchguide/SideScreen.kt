@@ -75,7 +75,7 @@ class SideScreen : ComponentActivity() {
                                 Intent(this@SideScreen, AttackScreen::class.java).apply {
                                     putExtra("mapName", selectedMap)
                                     putExtra("agentName", selectedAgent)
-                                    putExtra("side", "Attacker")
+                                    putExtra("side", "atkSide")
                                 }
                             )
                         }

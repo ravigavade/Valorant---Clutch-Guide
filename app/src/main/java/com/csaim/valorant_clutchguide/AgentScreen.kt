@@ -61,7 +61,7 @@ class AgentScreen : ComponentActivity() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "Killjoy", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
+                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
 
                     LazyVerticalGrid(
                         modifier = Modifier.padding(horizontal = 7.dp),
@@ -148,7 +148,7 @@ fun getAgentImageRes(agentName: String): Int {
         "Phoenix" -> R.drawable.phoenix
         "Sage" -> R.drawable.sage
         "Sova" -> R.drawable.sova
-        "Killjoy" -> R.drawable.killjoy
+        "kj" -> R.drawable.killjoy
         "Breach" -> R.drawable.breach
         "Omen" -> R.drawable.omen
         "Vyse" -> R.drawable.vyse

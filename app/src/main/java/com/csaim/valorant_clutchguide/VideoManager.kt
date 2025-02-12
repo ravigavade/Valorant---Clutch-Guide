@@ -21,9 +21,14 @@ class VideoManager {
         okHttpClient = builder.build()
     }
 
-    suspend fun retrieveVideos(site:String): List<VideoData> = withContext(Dispatchers.IO) {
+    suspend fun retrieveVideos(
+        map:String,
+        agent:String,
+        side:String,
+        site:String
+    ): List<VideoData> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
-            .url("https://csaimgod.pythonanywhere.com/videos/kj/atkSide/$site")
+            .url("https://csaimgod.pythonanywhere.com/videos/$map/$agent/$side/$site")
             .get()
             .build()
 
