@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.toArgb
@@ -264,7 +265,8 @@ fun home_screen(modifier: Modifier = Modifier) {
                         composable("details") { NonActiveMaps(navController) }
 
                     }
-                }
+
+                }//
 
         }
     )
@@ -390,4 +392,6 @@ fun NonActiveMaps(navController: NavController) {
         }
     }
 }
+
+
 
