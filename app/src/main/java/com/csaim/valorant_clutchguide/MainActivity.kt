@@ -45,6 +45,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray2
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -85,6 +86,15 @@ fun home_screen(modifier: Modifier = Modifier) {
                 ) {
                     Text(
                         "Valorant - Clutch Guide",
+                        fontFamily = valo,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp)
+
+                    )
+                    Divider()
+                    Text(
+                        "tracker",
                         fontFamily = valo,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
@@ -160,9 +170,15 @@ fun home_screen(modifier: Modifier = Modifier) {
         },
         content = {
 
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
+            ) {
+
                 Column(
                     modifier = Modifier
-                        .background(Color.Black) // Set the dark background
+                        .background(MuchDarkBlueGray) // Set the dark background
                         .statusBarsPadding()
                 ) {
                     // Top Menu Bar
@@ -196,7 +212,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.Black)
+                                .background(MuchDarkBlueGray)
                                 .padding(top = 16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
@@ -259,14 +275,44 @@ fun home_screen(modifier: Modifier = Modifier) {
                     }
 
 
-                    // Navigation setup
-                    NavHost(navController, startDestination = "home") {
-                        composable("home") { ActiveMaps(navController) }
-                        composable("details") { NonActiveMaps(navController) }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .weight(1f)
+                            .background(Color.Red)
+                    ){
+
+                        // Navigation setup
+                        NavHost(navController, startDestination = "home") {
+                            composable("home") { ActiveMaps(navController) }
+                            composable("details") { NonActiveMaps(navController) }
+
+                        }
 
                     }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .background(MuchDarkBlueGray)
+                    ){
+                        Text(
+                            text = "Bottom Bar hahahah",
+                            color = Color.White,
+                            fontFamily = valo,
+                            fontSize = 30.sp,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+
+
 
                 }//
+
+
+            }
+
 
         }
     )
@@ -392,6 +438,5 @@ fun NonActiveMaps(navController: NavController) {
         }
     }
 }
-
 
 
