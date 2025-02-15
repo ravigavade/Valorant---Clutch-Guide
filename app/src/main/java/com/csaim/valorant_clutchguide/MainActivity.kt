@@ -91,6 +91,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     )
                     Divider()
 
+
                     // Menu items
                     Row(
                         modifier = Modifier
@@ -157,110 +158,114 @@ fun home_screen(modifier: Modifier = Modifier) {
             }
         },
         content = {
-            Column(
-                modifier = Modifier
-                    .background(Color.Black) // Set the dark background
-                    .statusBarsPadding()
-            ) {
-                // Top Menu Bar
-                Row(
-                    modifier = Modifier.padding(end = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+
+                Column(
+                    modifier = Modifier
+                        .background(Color.Black) // Set the dark background
+                        .statusBarsPadding()
                 ) {
-                    IconButton(onClick = { drawerState = !drawerState }) {
-                        Icon(
-                            Icons.Filled.Menu,
-                            contentDescription = "Menu",
-                            tint = Color.White
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Card(
-                        shape = RoundedCornerShape(5.dp),
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo),
-                            contentDescription = "App Icon",
-                            modifier = Modifier.size(50.dp)
-                        )
-                    }
-                }
-
-                val navController = rememberNavController()
-                var selectedTab by remember { mutableStateOf("home") }
-
-                Column {
+                    // Top Menu Bar
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.Black)
-                            .padding(top = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier.padding(end = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Home Tab
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable {
-                                    selectedTab = "home"
-                                    navController.navigate("home")
-                                },
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "Active Maps",
-                                color = Color.White,
-                                fontFamily = valo,
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(bottom = 16.dp)
+                        IconButton(onClick = { drawerState = !drawerState }) {
+                            Icon(
+                                Icons.Filled.Menu,
+                                contentDescription = "Menu",
+                                tint = Color.White
                             )
-                            if (selectedTab == "home") {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1.dp)
-                                        .background(Color.White)
-                                )
-                            }
                         }
-
-                        // Other Maps Tab
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable {
-                                    selectedTab = "details"
-                                    navController.navigate("details")
-                                },
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        Spacer(modifier = Modifier.weight(1f))
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
                         ) {
-                            Text(
-                                text = "Other Maps",
-                                color = Color.White,
-                                fontFamily = valo,
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(bottom = 16.dp)
+                            Image(
+                                painter = painterResource(id = R.drawable.logo),
+                                contentDescription = "App Icon",
+                                modifier = Modifier.size(50.dp)
                             )
-                            if (selectedTab == "details") {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(1.dp)
-                                        .background(Color.White)
+                        }
+                    }
+
+                    val navController = rememberNavController()
+                    var selectedTab by remember { mutableStateOf("home") }
+
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.Black)
+                                .padding(top = 16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            // Home Tab
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        selectedTab = "home"
+                                        navController.navigate("home")
+                                    },
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "Active Maps",
+                                    color = Color.White,
+                                    fontFamily = valo,
+                                    fontSize = 20.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.padding(bottom = 16.dp)
                                 )
+                                if (selectedTab == "home") {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .background(Color.White)
+                                    )
+                                }
+                            }
+
+                            // Other Maps Tab
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable {
+                                        selectedTab = "details"
+                                        navController.navigate("details")
+                                    },
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "Other Maps",
+                                    color = Color.White,
+                                    fontFamily = valo,
+                                    fontSize = 20.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.padding(bottom = 16.dp)
+                                )
+                                if (selectedTab == "details") {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .background(Color.White)
+                                    )
+                                }
                             }
                         }
                     }
+
+
+                    // Navigation setup
+                    NavHost(navController, startDestination = "home") {
+                        composable("home") { ActiveMaps(navController) }
+                        composable("details") { NonActiveMaps(navController) }
+
+                    }
                 }
 
-                // Navigation setup
-                NavHost(navController, startDestination = "home") {
-                    composable("home") { ActiveMaps(navController) }
-                    composable("details") { NonActiveMaps(navController) }
-                }
-            }
         }
     )
 }
@@ -385,3 +390,4 @@ fun NonActiveMaps(navController: NavController) {
         }
     }
 }
+
