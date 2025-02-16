@@ -7,37 +7,32 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.OptIn
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -55,6 +50,7 @@ class ContentScreen : ComponentActivity() {
         val selectedAgent = intent.getStringExtra("agentName") ?: "Unknown Agent"
         val selectedSide = intent.getStringExtra("side") ?: "Unknown Side"
         val selectedSite = intent.getStringExtra("site") ?: "Unknown Site"
+
 
         setContent {
             ValorantClutchGuideTheme {
@@ -210,43 +206,53 @@ fun VideoCard(video: VideoData, modifier: Modifier = Modifier) {
 
 @OptIn(UnstableApi::class)
 @Composable
-fun VideoPlayer(videoUrl: String, weight: Modifier) {
-    // Remember the ExoPlayer instance to avoid reinitialization on recomposition
-
+fun VideoPlayer(videoUrl: String, fillMaxHeight: Modifier) {
     val context = LocalContext.current
     val exoPlayer = remember(videoUrl) {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(videoUrl))
+            repeatMode = Player.REPEAT_MODE_ONE
             prepare()
         }
     }
 
-    // Use AndroidView to integrate the PlayerView
-    AndroidView(
-        factory = { context ->
-            PlayerView(context).apply {
-                player = exoPlayer
+    // Track if video is playing
+    val isPlaying = remember { mutableStateOf(false) }
 
-                useController = true // Enables controls, but we customize them
-                // Hide unnecessary buttons and UI elements
-                setShowFastForwardButton(false)
-                setShowRewindButton(false)
-                setShowNextButton(false)
-                setShowPreviousButton(false)
-                setShowShuffleButton(false)
-                setShowVrButton(false)
-                setShowMultiWindowTimeBar(false) // Hides the timeline
-
-                controllerShowTimeoutMs = 1500 // Controls auto-hide after 3 sec
-            }
-        },
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(16f / 9f) // Adjusts the video aspect ratio
-    )
+            .aspectRatio(16f / 9f)
+            .clickable {
+                // Toggle play/pause on tap
+                isPlaying.value = !isPlaying.value
+                exoPlayer.playWhenReady = isPlaying.value
+            }
+    ) {
+        // Video Player
+        AndroidView(
+            factory = { context ->
+                PlayerView(context).apply {
+                    player = exoPlayer
+                    useController = false // Hide default controls
+                    controllerAutoShow = false
+                }
+            },
+            modifier = Modifier.matchParentSize()
+        )
 
-
-    // Free resources when the composable is disposed
+        // Show play button when paused
+        if (!isPlaying.value) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_play_arrow_24),
+                contentDescription = "Play Button",
+                tint = Color.White,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(60.dp)
+            )
+        }
+    }
 
     DisposableEffect(Unit) {
         onDispose {

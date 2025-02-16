@@ -495,10 +495,10 @@ fun DropDownDemo() {
     val itemPosition3 = remember { mutableStateOf(0) }
     val itemPosition4 = remember { mutableStateOf(0) }
 
-    val maps = listOf("Abyss", "Pearl", "Fracture", "Split", "Haven", "Lotus", "Bind")
-    val agents = listOf("Brimstone", "Viper", "Omen", "Phoenix", "Jett", "Sage", "Breach", "Cypher", "Sova", "Raze", "Killjoy", "Reyna", "Skye", "Yoru", "Astra", "KAY/O")
-    val sides = listOf("Attack", "Defense")
-    val sites = listOf("Site A", "Side B")
+    val maps = listOf("Abyss", "Pearl", "Fracture", "Split", "Haven", "Lotus", "bind")
+    val agents = listOf("Brimstone", "Viper", "Omen", "Phoenix", "Jett", "Sage", "Breach", "Cypher", "Sova", "Raze", "kj", "Reyna", "Skye", "Yoru", "Astra", "KAY/O")
+    val sides = listOf("atkSide", "Defense")
+    val sites = listOf("siteA", "Side B")
 
 
     //map
@@ -733,14 +733,20 @@ fun DropDownDemo() {
                     contentColor = Color.White
                 ),
                 onClick = {
-    //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
-                    Toast.makeText(context,
-                        "MAP: ${maps[itemPosition.value]}" +
-                        "AGENT: ${agents[itemPosition1.value]}" +
-                        "SIDE: ${sides[itemPosition3.value]}" +
-                        "SITE: ${sites[itemPosition4.value]}",
-
-                        Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, ContentScreen::class.java).apply {
+                        putExtra("mapName", maps[itemPosition.value])
+                        putExtra("agentName", agents[itemPosition1.value])
+                        putExtra("side", sides[itemPosition3.value])
+                        putExtra("site", sites[itemPosition4.value])
+                    }
+                    context.startActivity(intent)
+//                    Toast.makeText(context,
+//                        "MAP: ${maps[itemPosition.value]}" +
+//                        "AGENT: ${agents[itemPosition1.value]}" +
+//                        "SIDE: ${sides[itemPosition3.value]}" +
+//                        "SITE: ${sites[itemPosition4.value]}",
+//
+//                        Toast.LENGTH_SHORT).show()
 
                 }
             )
