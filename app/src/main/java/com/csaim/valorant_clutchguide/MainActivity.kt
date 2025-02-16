@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -21,7 +22,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,10 +51,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-                // For API >= 23, change status bar text and icon color to white
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    // Change the status bar color to MuchDarkBlueGray
+                    window.statusBarColor = MuchDarkBlueGray.toArgb()
+
+                    // Set the status bar text and icon color to white
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() // This keeps the icons/text white
+
+                    // Ensure the status bar remains visible
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                } else {
+                    // For older versions, you can just set the status bar color
+                    window.statusBarColor = MuchDarkBlueGray.toArgb()
                 }
+
+
+
                 home_screen()
             }
         }
@@ -187,7 +203,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Card(
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(50.dp),
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.logo),
@@ -289,7 +305,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(80.dp)
+                            .height(120.dp)
                             .background(MuchDarkBlueGray)
                     ){
                         DropDownDemo()
@@ -446,195 +462,236 @@ fun DropDownDemo() {
     val sides = listOf("Attack", "Defense")
     val sites = listOf("Site A", "Side B")
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 10.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .background(MuchDarkBlueGray)
+    ){
 
-    ) {
-
-        // Maps Dropdown
         Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clickable {
-                isMapDropDownExpanded.value = !isMapDropDownExpanded.value
+                .fillMaxWidth()
+//                .background(Color.Green)
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+
+        ) {
+
+            // Maps Dropdown
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable {
+                    isMapDropDownExpanded.value = !isMapDropDownExpanded.value
+                }
+            ) {
+                Text(
+                    text = maps[itemPosition.value],
+                    fontFamily = valo,
+                    color = Color.White
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
+                    contentDescription = "Map Dropdown Icon",
+                    tint = RedPrimary
+                )
             }
-        ) {
-            Text(
-                text = maps[itemPosition.value],
-                fontFamily = valo,
-                color = Color.White
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
-                contentDescription = "Map Dropdown Icon",
-                tint = RedPrimary
-            )
-        }
 
-        DropdownMenu(
-            modifier = Modifier
-                .height(300.dp)
-                .background(MuchDarkBlueGray),
-            expanded = isMapDropDownExpanded.value,
-            onDismissRequest = { isMapDropDownExpanded.value = false },
-        ) {
-            maps.forEachIndexed { index, agentname ->
-                DropdownMenuItem(text = {
-                    Text(
-                        text = agentname,
-                        fontFamily = valo,
-                        color = Color.White
-                    )
-//                    Divider()
-                },
-                    onClick = {
-                        isMapDropDownExpanded.value = false
-                        itemPosition.value = index
-                    })
-            }
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        // Agents Dropdown
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable {
-                isAgentDropDownExpanded.value = !isAgentDropDownExpanded.value
-            }
-        ) {
-            Text(
-                text = agents[itemPosition1.value],
-                fontFamily = valo,
-                color = Color.White
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
-                contentDescription = "Agent Dropdown Icon",
-                tint = RedPrimary
-            )
-        }
-
-        DropdownMenu(
-            modifier = Modifier
-                .height(300.dp)
-                .background(MuchDarkBlueGray),
-            expanded = isAgentDropDownExpanded.value,
-            onDismissRequest = { isAgentDropDownExpanded.value = false }
-        ) {
-            agents.forEachIndexed { index, agentname ->
-                DropdownMenuItem(
-//                    modifier = Modifier.background(MuchDarkBlueGray),
-                    text = {
-                    Text(
-                        text = agentname,
-                        fontFamily = valo,
-                        color = Color.White
-                    )
-                },
-                    onClick = {
-                        isAgentDropDownExpanded.value = false
-                        itemPosition1.value = index
-                    })
-            }
-        }
-
-
-        //side dropdown
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable {
-                isSideExpanded.value = !isSideExpanded.value
-            }
-        ) {
-            Text(
-                text = sides[itemPosition3.value],
-                fontFamily = valo,
-                color = Color.White
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
-                contentDescription = "Side Dropdown Icon",
-                tint = RedPrimary
-            )
-        }
-
-        DropdownMenu(
-            modifier = Modifier
-                .height(120.dp)
-                .background(MuchDarkBlueGray),
-            expanded = isSideExpanded.value,
-            onDismissRequest = { isSideExpanded.value = false }
-        ) {
-            sides.forEachIndexed { index, sidename ->
-                DropdownMenuItem(
-//                    modifier = Modifier.background(MuchDarkBlueGray),
-                    text = {
+            DropdownMenu(
+                modifier = Modifier
+                    .height(300.dp)
+                    .background(MuchDarkBlueGray),
+                expanded = isMapDropDownExpanded.value,
+                onDismissRequest = { isMapDropDownExpanded.value = false },
+            ) {
+                maps.forEachIndexed { index, agentname ->
+                    DropdownMenuItem(text = {
                         Text(
-                            text = sidename,
+                            text = agentname,
+                            fontFamily = valo,
+                            color = Color.White
+                        )
+    //                    Divider()
+                    },
+                        onClick = {
+                            isMapDropDownExpanded.value = false
+                            itemPosition.value = index
+                        })
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Agents Dropdown
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    isAgentDropDownExpanded.value = !isAgentDropDownExpanded.value
+                }
+            ) {
+                Text(
+                    text = agents[itemPosition1.value],
+                    fontFamily = valo,
+                    color = Color.White
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
+                    contentDescription = "Agent Dropdown Icon",
+                    tint = RedPrimary
+                )
+            }
+
+            DropdownMenu(
+                modifier = Modifier
+                    .height(300.dp)
+                    .background(MuchDarkBlueGray),
+                expanded = isAgentDropDownExpanded.value,
+                onDismissRequest = { isAgentDropDownExpanded.value = false }
+            ) {
+                agents.forEachIndexed { index, agentname ->
+                    DropdownMenuItem(
+    //                    modifier = Modifier.background(MuchDarkBlueGray),
+                        text = {
+                        Text(
+                            text = agentname,
                             fontFamily = valo,
                             color = Color.White
                         )
                     },
-                    onClick = {
-                        isSideExpanded.value = false
-                        itemPosition3.value = index
-                    })
+                        onClick = {
+                            isAgentDropDownExpanded.value = false
+                            itemPosition1.value = index
+                        })
+                }
             }
+
+
+            //side dropdown
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    isSideExpanded.value = !isSideExpanded.value
+                }
+            ) {
+                Text(
+                    text = sides[itemPosition3.value],
+                    fontFamily = valo,
+                    color = Color.White
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
+                    contentDescription = "Side Dropdown Icon",
+                    tint = RedPrimary
+                )
+            }
+
+            DropdownMenu(
+                modifier = Modifier
+                    .height(120.dp)
+                    .background(MuchDarkBlueGray),
+                expanded = isSideExpanded.value,
+                onDismissRequest = { isSideExpanded.value = false }
+            ) {
+                sides.forEachIndexed { index, sidename ->
+                    DropdownMenuItem(
+    //                    modifier = Modifier.background(MuchDarkBlueGray),
+                        text = {
+                            Text(
+                                text = sidename,
+                                fontFamily = valo,
+                                color = Color.White
+                            )
+                        },
+                        onClick = {
+                            isSideExpanded.value = false
+                            itemPosition3.value = index
+                        })
+                }
+            }
+
+
+
+            //site dropdown
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    isSiteExpanded.value = !isSiteExpanded.value
+                }
+            ) {
+                Text(
+                    text = sites[itemPosition4.value],
+                    fontFamily = valo,
+                    color = Color.White
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
+                    contentDescription = "Site Dropdown Icon",
+                    tint = RedPrimary // Set the tint color to white
+                )
+            }
+
+            DropdownMenu(
+                modifier = Modifier
+                    .height(120.dp)
+                    .background(MuchDarkBlueGray),
+                expanded = isSiteExpanded.value,
+                onDismissRequest = { isSiteExpanded.value = false }
+            ) {
+                sites.forEachIndexed { index, sitename ->
+                    DropdownMenuItem(
+    //                    modifier = Modifier.background(MuchDarkBlueGray),
+                        text = {
+                            Text(
+                                text = sitename,
+                                fontFamily = valo,
+                                color = Color.White
+                            )
+                        },
+                        onClick = {
+                            isSiteExpanded.value = false
+                            itemPosition4.value = index
+                        })
+                }
+            }
+
+
         }
 
-
-
-        //site dropdown
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable {
-                isSiteExpanded.value = !isSiteExpanded.value
-            }
-        ) {
-            Text(
-                text = sites[itemPosition4.value],
-                fontFamily = valo,
-                color = Color.White
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_drop_down_24),
-                contentDescription = "Site Dropdown Icon",
-                tint = RedPrimary // Set the tint color to white
-            )
-        }
-
-        DropdownMenu(
+        val context = LocalContext.current
+        Button(
             modifier = Modifier
-                .height(120.dp)
-                .background(MuchDarkBlueGray),
-            expanded = isSiteExpanded.value,
-            onDismissRequest = { isSiteExpanded.value = false }
-        ) {
-            sites.forEachIndexed { index, sitename ->
-                DropdownMenuItem(
-//                    modifier = Modifier.background(MuchDarkBlueGray),
-                    text = {
-                        Text(
-                            text = sitename,
-                            fontFamily = valo,
-                            color = Color.White
-                        )
-                    },
-                    onClick = {
-                        isSiteExpanded.value = false
-                        itemPosition4.value = index
-                    })
-            }
-        }
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(5.dp), // This sets the rounded corners
+            colors = ButtonDefaults.buttonColors(
+                containerColor = DarkRed,
+                contentColor = Color.White
+            ),
+            onClick = {
+//                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
+                Toast.makeText(context,
+                    "MAP: ${maps[itemPosition.value]}" +
+                    "AGENT: ${agents[itemPosition1.value]}" +
+                    "SIDE: ${sides[itemPosition3.value]}" +
+                    "SITE: ${sites[itemPosition4.value]}",
 
+                    Toast.LENGTH_SHORT).show()
+
+            }
+        )
+
+        {
+            Text(
+                "quick search",
+                fontFamily = valo
+            )
+        }
 
     }
+
 }
