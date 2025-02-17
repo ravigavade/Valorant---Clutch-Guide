@@ -79,6 +79,7 @@ fun ContentScreenContent(
                 .fillMaxWidth()
                 .background(Color.Black)
                 .padding(16.dp)
+                .statusBarsPadding()
         ) {
             Text(
                 text = "Map: $selectedMap",

@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
             ValorantClutchGuideTheme {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     // Change the status bar color to MuchDarkBlueGray
-                    window.statusBarColor = MuchDarkBlueGray.toArgb()
+                    window.statusBarColor = DarkBlueGray.toArgb()
 
                     // Set the status bar text and icon color to white
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() // This keeps the icons/text white
@@ -69,12 +69,13 @@ class MainActivity : ComponentActivity() {
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 } else {
                     // For older versions, you can just set the status bar color
-                    window.statusBarColor = MuchDarkBlueGray.toArgb()
+                    window.statusBarColor = DarkBlueGray.toArgb()
                 }
 
 
 
                 home_screen()
+
             }
         }
     }
@@ -219,7 +220,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 
                 Column(
                     modifier = Modifier
-                        .background(MuchDarkBlueGray) // Set the dark background
+                        .background(DarkBlueGray) // Set the dark background
                         .statusBarsPadding()
                 ) {
                     // Top Menu Bar
@@ -257,7 +258,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(MuchDarkBlueGray)
+                                .background(DarkBlueGray)
                                 .padding(top = 16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
@@ -343,7 +344,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(95.dp)
-                            .background(MuchDarkBlueGray),
+                            .background(DarkBlueGray),
                         contentAlignment = Alignment.Center
                     ){
                         DropDownDemo()
@@ -368,7 +369,7 @@ fun ActiveMaps(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .background(DarkBlueGray)
+            .background(MuchDarkBlueGray)
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -387,6 +388,7 @@ fun ActiveMaps(navController: NavController) {
                             putExtra("mapName", mapName)
                         }
                         context.startActivity(intent)
+
                     }
                 ) {
                     Box(
@@ -430,7 +432,7 @@ fun NonActiveMaps(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .background(DarkBlueGray2)
+            .background(MuchDarkBlueGray)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -497,15 +499,15 @@ fun DropDownDemo() {
 
     val maps = listOf("Abyss", "Pearl", "Fracture", "Split", "Haven", "Lotus", "bind")
     val agents = listOf("Brimstone", "Viper", "Omen", "Phoenix", "Jett", "Sage", "Breach", "Cypher", "Sova", "Raze", "kj", "Reyna", "Skye", "Yoru", "Astra", "KAY/O")
-    val sides = listOf("atkSide", "Defense")
-    val sites = listOf("siteA", "Side B")
+    val sides = listOf("atkSide", "defSide")
+    val sites = listOf("siteA", "siteB")
 
 
     //map
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MuchDarkBlueGray)
+            .background(DarkBlueGray)
     ){
 
         Row(
@@ -758,9 +760,7 @@ fun DropDownDemo() {
                 )
             }
 
-
-
-
     }
-
 }
+
+

@@ -5,4 +5,5 @@
     <string name="title_activity_defence_screen">DefenceScreen</string>
     <string name="title_activity_agent_screen">AgentScreen</string>
     <string name="title_activity_content_screen">ContentScreen</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

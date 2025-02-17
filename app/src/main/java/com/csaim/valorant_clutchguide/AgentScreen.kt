@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,10 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -45,11 +48,12 @@ class AgentScreen : ComponentActivity() {
             ValorantClutchGuideTheme {
                 Column(
                     modifier = Modifier
-                        .background(Color.Black)
+                        .background(DarkBlueGray)
                         .statusBarsPadding()
                         .fillMaxSize()
 
                 ) {
+
                     // Display the chosen map at the top
                     Text(
                         text = "Map: $selectedMap",
@@ -61,7 +65,7 @@ class AgentScreen : ComponentActivity() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAY/O", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
+                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAYO", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
 
                     LazyVerticalGrid(
                         modifier = Modifier.padding(horizontal = 7.dp),
@@ -96,7 +100,7 @@ fun AgentCard(agentName: String, onClick: () -> Unit) {
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = DarkBlueGray
+            containerColor = MuchDarkBlueGray
         ),
         onClick = onClick,
     ) {
