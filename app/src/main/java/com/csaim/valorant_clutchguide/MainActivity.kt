@@ -22,6 +22,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -162,7 +163,9 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .padding(8.dp)
 
-                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
+                            .clickable {
+                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
+                            }
                     ) {
                         Card(
                             shape = RoundedCornerShape(5.dp),
@@ -187,15 +190,44 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .padding(8.dp)
 
-                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
+                            .clickable {  val intent = Intent(context, PatchNotes::class.java)
+                                context.startActivity(intent)
+                            }
                     ) {
                         Card(
                             shape = RoundedCornerShape(5.dp),
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.icon),
+                                painter = painterResource(id = R.drawable.cypher),
                                 contentDescription = "About Us Icon",
                                 modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Patch notes",
+                            fontSize = 18.sp,
+                            color = Color.White,
+
+                            fontFamily = valo,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+
+                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
+                    ) {
+                        Card(
+                            shape = CircleShape,
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.logo),
+                                contentDescription = "App Icon",
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .clip(CircleShape)
                             )
                         }
                         Text(
@@ -207,6 +239,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                             modifier = Modifier.padding(16.dp)
                         )
                     }
+
                 }
             }
         },
