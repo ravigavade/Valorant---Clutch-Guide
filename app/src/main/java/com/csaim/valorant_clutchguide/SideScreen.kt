@@ -75,15 +75,16 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Choose Your Site", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        SiteSelectionCard("Site A", R.drawable.abyss, selectedSite == "siteA", selectedSide == "atkSide") {
-            if (selectedSide == "atkSide") selectedSite = "siteA"
+        SiteSelectionCard("Site A", R.drawable.abyss, selectedSite == "siteA", selectedSide != null) {
+            selectedSite = "siteA"
         }
-        SiteSelectionCard("Site B", R.drawable.fade, selectedSite == "siteB", selectedSide == "atkSide") {
-            if (selectedSide == "atkSide") selectedSite = "siteB"
+        SiteSelectionCard("Site B", R.drawable.fade, selectedSite == "siteB", selectedSide != null) {
+            selectedSite = "siteB"
         }
-        SiteSelectionCard("Mid", R.drawable.cypher, selectedSite == "mid", selectedSide == "atkSide") {
-            if (selectedSide == "atkSide") selectedSite = "mid"
+        SiteSelectionCard("Mid", R.drawable.cypher, selectedSite == "mid", selectedSide != null) {
+            selectedSite = "mid"
         }
+
 
         Spacer(modifier = Modifier.height(20.dp))
         Button(
