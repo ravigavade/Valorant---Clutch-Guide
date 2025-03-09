@@ -62,7 +62,7 @@ fun PatchNotesScreen() {
                 WebView(context).apply {
                     webViewClient = WebViewClient()
                     settings.javaScriptEnabled = true
-                    loadUrl("https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-10-03/")
+                    loadUrl("https://playvalorant.com/en-us/news/game-updates")
                 }
             },
             modifier = Modifier.weight(1f) // This makes WebView fill all available space
