@@ -15,6 +15,11 @@
         android:theme="@style/Theme.ValorantClutchGuide"
         tools:targetApi="31">
         <activity
+            android:name=".AboutUS"
+            android:exported="false"
+            android:label="@string/title_activity_about_us"
+            android:theme="@style/Theme.ValorantClutchGuide" />
+        <activity
             android:name=".CommunityPosts"
             android:exported="false"
             android:label="@string/title_activity_community_posts"

@@ -62,7 +62,7 @@ class VideoManager {
 
     suspend fun retrieveCommunityVideos(): List<VideoData> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
-            .url("https://csaimgod.pythonanywhere.com/videos/uploaded_videos/")
+            .url("https://csaimgod.pythonanywhere.com/videos/community/")
             .get()
             .build()
 

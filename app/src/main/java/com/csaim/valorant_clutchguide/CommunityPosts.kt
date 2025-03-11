@@ -1,5 +1,6 @@
 package com.csaim.valorant_clutchguide
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -19,12 +20,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +50,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -68,6 +72,21 @@ fun VideoScreen() {
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
     val videoManager = VideoManager()
+    val context = LocalContext.current  // Retrieve the context
+
+
+    // State to manage dialog visibility
+    var showDialog by remember { mutableStateOf(true) }  // Show dialog initially
+
+    // Check if the user is a first-time user using shared preferences
+    val isFirstTime = isFirstTimeUser(context)
+    if (isFirstTime && showDialog) {
+        // Show the dialog
+        FirstTimeDialog(onDismiss = {
+            setFirstTimeUserFlag(context)  // Set flag after first-time user sees the message
+            showDialog = false  // Dismiss the dialog
+        })
+    }
 
     // Fetch videos asynchronously
     LaunchedEffect(Unit) {
@@ -193,5 +212,43 @@ fun VideoPlayer1(videoUrl: String, fillMaxHeight: Modifier) {
         onDispose {
             exoPlayer.release()
         }
+    }
+}
+
+@Composable
+fun FirstTimeDialog(onDismiss: () -> Unit) {
+    // Dialog content with a "Got it" button
+    AlertDialog(
+//        containerColor = RedPrimary,
+        onDismissRequest = { onDismiss() },
+        title = {
+            Text(
+                text = "Welcome to the Community Post",
+                fontFamily = valo,
+                color = RedPrimary
+            ) },
+        text = {
+            Text("This is a community post type page where all videos are for the gamers and by the gamers. Please maintain courtesy while uploading and watching the content.")
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Got it")
+            }
+        }
+    )
+}
+
+// Function to check if it's the user's first time
+fun isFirstTimeUser(context: Context): Boolean {
+    val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    return sharedPreferences.getBoolean("isFirstTime", true)
+}
+
+// Function to set the first-time user flag to false
+fun setFirstTimeUserFlag(context: Context) {
+    val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        putBoolean("isFirstTime", false)  // Set flag to false after user sees the dialog
+        apply()
     }
 }

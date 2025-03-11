@@ -113,18 +113,60 @@ fun home_screen(modifier: Modifier = Modifier) {
 
                     )
                     Divider()
-                    Text(
-                        "Community🔥",
-                        fontFamily = valo,
-                        fontSize = 20.sp,
-                        color = Color.White,
 
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(16.dp)
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
                             .clickable {  val intent = Intent(context, CommunityPosts::class.java)
                                 context.startActivity(intent)
                             }
-                    )
+                    ) {
+
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.nade),
+                                contentDescription = "About Us Icon",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Community",
+                            fontFamily = valo,
+                            fontSize = 20.sp,
+                            color = Color.White,
+
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+
+                            .clickable {  val intent = Intent(context, PatchNotes::class.java)
+                                context.startActivity(intent)
+                            }
+                    ) {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.cypher),
+                                contentDescription = "About Us Icon",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Patch notes",
+                            fontSize = 18.sp,
+                            color = Color.White,
+
+                            fontFamily = valo,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                     Divider()
 
 
@@ -189,32 +231,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                         )
                     }
 
-                    Row(
-                        modifier = Modifier
-                            .padding(8.dp)
 
-                            .clickable {  val intent = Intent(context, PatchNotes::class.java)
-                                context.startActivity(intent)
-                            }
-                    ) {
-                        Card(
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.cypher),
-                                contentDescription = "About Us Icon",
-                                modifier = Modifier.size(50.dp)
-                            )
-                        }
-                        Text(
-                            "Patch notes",
-                            fontSize = 18.sp,
-                            color = Color.White,
-
-                            fontFamily = valo,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
 
                     Row(
                         modifier = Modifier
