@@ -82,6 +82,7 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                 selectedVideoUri?.let { uri ->
                     coroutineScope.launch {
                         val success = videoManager.uploadCommunityVideo(uri, context)
+
                         Log.d("Video Upload", "Upload successful: $success")
                     }
                 }

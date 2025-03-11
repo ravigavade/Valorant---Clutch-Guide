@@ -10,6 +10,7 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
@@ -135,12 +136,21 @@ class VideoManager {
         try {
             val videoFile = uriToFile(videoUri, context) ?: return@withContext false
 
-            val requestBody = RequestBody.create("video/mp4".toMediaTypeOrNull(), videoFile)
-            val multipartBody = MultipartBody.Part.createFormData("video", videoFile.name, requestBody)
+            // Ensure file details are correct
+            Log.d("Video Upload", "Uploading file: ${videoFile.name}, Size: ${videoFile.length()} bytes")
+
+            val requestBody = videoFile.asRequestBody("video/mp4".toMediaTypeOrNull())
+
+            // Send "file" instead of "video"
+            val multipartBody = MultipartBody.Part.createFormData("file", videoFile.name, requestBody)
+
+            // Include the required "name" field
+            val nameBody = MultipartBody.Part.createFormData("name", videoFile.name)
 
             val multipartRequestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addPart(multipartBody)
+                .addPart(nameBody)  // Include "name"
+                .addPart(multipartBody)  // Include the mp4 file
                 .build()
 
             val request = Request.Builder()
@@ -148,7 +158,14 @@ class VideoManager {
                 .post(multipartRequestBody)
                 .build()
 
+            Log.d("Video Upload", "Sending request: $request")
+
             val response: Response = okHttpClient.newCall(request).execute()
+
+            // Log full response
+            val responseBody = response.body?.string()
+            Log.d("Video Upload", "Response Code: ${response.code}")
+            Log.d("Video Upload", "Response Body: $responseBody")
 
             if (response.isSuccessful) {
                 Log.d("Video Upload", "Successfully uploaded video: ${videoFile.name}")
@@ -162,6 +179,7 @@ class VideoManager {
             return@withContext false
         }
     }
+
 
 
 
