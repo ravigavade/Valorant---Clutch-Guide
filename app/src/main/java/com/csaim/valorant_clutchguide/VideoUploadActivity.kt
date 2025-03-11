@@ -1,6 +1,5 @@
 package com.csaim.valorant_clutchguide
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -21,11 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 import java.io.File
 
 class VideoUploadActivity : ComponentActivity() {
@@ -45,6 +39,7 @@ class VideoUploadActivity : ComponentActivity() {
 @Composable
 fun VideoUploadScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val videoManager = remember { VideoManager() }  // Initialize VideoManager
     var selectedVideoUri by remember { mutableStateOf<Uri?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -86,7 +81,7 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
             onClick = {
                 selectedVideoUri?.let { uri ->
                     coroutineScope.launch {
-                        val success = uploadCommunityVideo(uri, context)
+                        val success = videoManager.uploadCommunityVideo(uri, context)
                         Log.d("Video Upload", "Upload successful: $success")
                     }
                 }
@@ -99,48 +94,17 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
     }
 }
 
-private fun uploadCommunityVideo(videoUri: Uri, context: Context): Boolean {
-    return try {
-        val videoFile = uriToFile(videoUri, context) ?: return false
-
-        val requestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), videoFile)
-
-        val multipartBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("video", videoFile.name, requestBody)
-            .build()
-
-        val request = Request.Builder()
-            .url("https://csaimgod.pythonanywhere.com/videos/upload")
-            .post(multipartBody)
-            .build()
-
-        val client = OkHttpClient()
-        val response = client.newCall(request).execute()
-
-        if (response.isSuccessful) {
-            Log.d("Video Upload", "Upload success")
-            true
-        } else {
-            Log.e("Video Upload", "Upload failed: ${response.code}")
-            false
-        }
-    } catch (e: Exception) {
-        Log.e("Video Upload", "Upload error: ${e.message}")
-        false
-    }
-}
-
 fun uriToFile(uri: Uri, context: Context): File? {
     return try {
         val contentResolver = context.contentResolver
-        val file = File(context.cacheDir, "upload_video.mp4")
-        contentResolver.openInputStream(uri)?.use { inputStream ->
-            file.outputStream().use { outputStream ->
-                inputStream.copyTo(outputStream)
+        val inputStream = contentResolver.openInputStream(uri) ?: return null
+        val tempFile = File.createTempFile("upload_video", ".mp4", context.cacheDir)
+        inputStream.use { input ->
+            tempFile.outputStream().use { output ->
+                input.copyTo(output)
             }
         }
-        file
+        tempFile
     } catch (e: Exception) {
         Log.e("File Conversion", "Error converting URI to File: ${e.message}")
         null

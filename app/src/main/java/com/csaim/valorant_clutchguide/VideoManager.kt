@@ -19,6 +19,7 @@ import org.json.JSONObject
 class VideoManager {
     private val okHttpClient: OkHttpClient
 
+
     init {
         val builder = OkHttpClient.Builder()
         val loggingInterceptor = HttpLoggingInterceptor()
