@@ -230,6 +230,32 @@ fun home_screen(modifier: Modifier = Modifier) {
                             modifier = Modifier.padding(16.dp)
                         )
                     }
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+
+                            .clickable {  val intent = Intent(context, VideoUploadActivity::class.java)
+                                context.startActivity(intent)
+                            }
+                    ) {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.baseline_slow_motion_video_24),
+                                contentDescription = "Instagram Icon",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Your clip",
+                            color = Color.White,
+
+                            fontSize = 18.sp,
+                            fontFamily = valo,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
 
 
 

@@ -72,7 +72,7 @@ fun PatchNotesScreen() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black.copy(alpha = 0.6f)) // Optional background for visibility
+                .background(Color.Black) // Optional background for visibility
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

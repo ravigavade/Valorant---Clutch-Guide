@@ -1,16 +1,22 @@
 package com.csaim.valorant_clutchguide
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.OptIn
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,13 +24,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -38,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +62,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
@@ -60,6 +73,19 @@ class CommunityPosts : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // Change the status bar color to MuchDarkBlueGray
+                    window.statusBarColor = DarkBlueGray.toArgb()
+
+                    // Set the status bar text and icon color to white
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() // This keeps the icons/text white
+
+                    // Ensure the status bar remains visible
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                } else {
+                    // For older versions, you can just set the status bar color
+                    window.statusBarColor = DarkBlueGray.toArgb()
+                }
                 VideoScreen()
             }
         }
@@ -113,14 +139,51 @@ fun VideoScreen() {
             }
         }
         else -> {
-            LazyColumn(
+
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(DarkBlueGray)
+                    .background(MuchDarkBlueGray)
                     .statusBarsPadding()
             ) {
-                items(videoList) { video ->
-                    VideoCard1(video)
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(DarkBlueGray) // Optional background for visibility
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "VALORANT CLUTCH GUIDE",
+                        fontFamily = valo,
+                        color = Color.White,
+                        fontSize = 20.sp
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Card(
+                        shape = RoundedCornerShape(50.dp),
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo),
+                            contentDescription = "App Icon",
+                            modifier = Modifier.size(50.dp)
+                        )
+                    }
+                }
+
+
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp)
+                        .background(MuchDarkBlueGray)
+                        .statusBarsPadding()
+                ) {
+                    items(videoList) { video ->
+                        VideoCard1(video)
+                    }
                 }
             }
         }
@@ -133,7 +196,7 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
 //            .fillMaxWidth()
-            .background(DarkBlueGray)
+            .background(MuchDarkBlueGray)
             .padding(bottom = 16.dp)
             .padding(horizontal = 16.dp),
         elevation = CardDefaults.cardElevation(8.dp)
@@ -158,6 +221,8 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
     }
 }
 
+
+//this is the video player or the vidoe container ig
 @OptIn(UnstableApi::class)
 @Composable
 fun VideoPlayer1(videoUrl: String, fillMaxHeight: Modifier) {

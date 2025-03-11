@@ -9,4 +9,5 @@
     <string name="title_activity_patch_notes">PatchNotes</string>
     <string name="title_activity_community_posts">CommunityPosts</string>
     <string name="title_activity_about_us">AboutUS</string>
+    <string name="title_activity_video_upload">VideoUploadActivity</string>
 </resources>

@@ -1,10 +1,16 @@
 package com.csaim.valorant_clutchguide
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
@@ -94,6 +100,73 @@ class VideoManager {
             return@withContext emptyList()
         }
     }
+
+    suspend fun postCommunityVideo(videoData: VideoData): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val jsonObject = JSONObject().apply {
+                put("name", videoData.name)
+                put("url", videoData.url)
+            }
+
+            val requestBody = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+            val request = Request.Builder()
+                .url("https://csaimgod.pythonanywhere.com/videos/upload")
+                .post(requestBody)
+                .build()
+
+            val response: Response = okHttpClient.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                Log.d("Video Post", "Successfully posted video: ${videoData.name}")
+                return@withContext true
+            } else {
+                Log.e("Video Post", "Failed to post video. Response code: ${response.code}")
+                return@withContext false
+            }
+        } catch (e: Exception) {
+            Log.e("Video Post", "Error posting video: ${e.message}")
+            return@withContext false
+        }
+    }
+
+    suspend fun uploadCommunityVideo(videoUri: Uri, context: Context): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val videoFile = uriToFile(videoUri, context) ?: return@withContext false
+
+            val requestBody = RequestBody.create("video/mp4".toMediaTypeOrNull(), videoFile)
+            val multipartBody = MultipartBody.Part.createFormData("video", videoFile.name, requestBody)
+
+            val multipartRequestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addPart(multipartBody)
+                .build()
+
+            val request = Request.Builder()
+                .url("https://csaimgod.pythonanywhere.com/videos/upload")
+                .post(multipartRequestBody)
+                .build()
+
+            val response: Response = okHttpClient.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                Log.d("Video Upload", "Successfully uploaded video: ${videoFile.name}")
+                return@withContext true
+            } else {
+                Log.e("Video Upload", "Failed to upload video. Response code: ${response.code}")
+                return@withContext false
+            }
+        } catch (e: Exception) {
+            Log.e("Video Upload", "Error uploading video: ${e.message}")
+            return@withContext false
+        }
+    }
+
+
+
+
+
+
 
 
 
