@@ -114,13 +114,16 @@ fun home_screen(modifier: Modifier = Modifier) {
                     )
                     Divider()
                     Text(
-                        "tracker",
+                        "Community🔥",
                         fontFamily = valo,
                         fontSize = 20.sp,
                         color = Color.White,
 
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(16.dp)
+                            .clickable {  val intent = Intent(context, CommunityPosts::class.java)
+                                context.startActivity(intent)
+                            }
                     )
                     Divider()
 

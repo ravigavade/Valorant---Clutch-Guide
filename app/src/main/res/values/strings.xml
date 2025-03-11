@@ -7,4 +7,5 @@
     <string name="title_activity_content_screen">ContentScreen</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_patch_notes">PatchNotes</string>
+    <string name="title_activity_community_posts">CommunityPosts</string>
 </resources>

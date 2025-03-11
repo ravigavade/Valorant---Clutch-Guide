@@ -55,13 +55,13 @@ class AgentScreen : ComponentActivity() {
                 ) {
 
                     // Display the chosen map at the top
-                    Text(
-                        text = "Map: $selectedMap",
-                        fontFamily = valo,
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(16.dp)
-                    )
+//                    Text(
+//                        text = "Map: $selectedMap",
+//                        fontFamily = valo,
+//                        color = Color.White,
+//                        fontSize = 20.sp,
+//                        modifier = Modifier.padding(16.dp)
+//                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 

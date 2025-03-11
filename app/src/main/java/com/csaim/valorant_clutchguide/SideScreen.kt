@@ -59,9 +59,9 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
             .verticalScroll(scrollState)
             .statusBarsPadding()
     ) {
-        Text(text = "Map: $selectedMap", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text(text = "Agent: $selectedAgent", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(16.dp))
+//        Text(text = "Map: $selectedMap", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+//        Text(text = "Agent: $selectedAgent", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+//        Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "Choose Your Side", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         SideSelectionCard("Attacker's Side", R.drawable.attackersside, selectedSide == "atkSide") {
