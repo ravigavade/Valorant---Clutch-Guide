@@ -80,6 +80,7 @@ class AgentScreen : ComponentActivity() {
                                     Intent(this@AgentScreen, SideScreen::class.java).apply {
                                         putExtra("mapName", selectedMap)
                                         putExtra("agentName", agentName)
+                                        finish()
                                     }
                                 )
                             })

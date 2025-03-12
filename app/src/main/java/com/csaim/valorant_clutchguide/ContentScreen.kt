@@ -74,13 +74,13 @@ fun ContentScreenContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Header displaying the accumulated selections
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Black)
-                .padding(16.dp)
-                .statusBarsPadding()
-        ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .background(Color.Black)
+//                .padding(16.dp)
+//                .statusBarsPadding()
+//        ) {
 //            Text(
 //                text = "Map: $selectedMap",
 //                fontFamily = valo,
@@ -109,7 +109,7 @@ fun ContentScreenContent(
 //                fontSize = 20.sp,
 //                modifier = Modifier.fillMaxWidth()
 //            )
-        }
+//        }
         // Video list area; using Box with weight(1f) so it takes the remaining space.
         Box(modifier = Modifier.weight(1f)) {
             VideoScreen(

@@ -284,7 +284,7 @@ fun VideoPlayer1(videoUrl: String, fillMaxHeight: Modifier) {
 fun FirstTimeDialog(onDismiss: () -> Unit) {
     // Dialog content with a "Got it" button
     AlertDialog(
-//        containerColor = RedPrimary,
+        containerColor = MuchDarkBlueGray,
         onDismissRequest = { onDismiss() },
         title = {
             Text(

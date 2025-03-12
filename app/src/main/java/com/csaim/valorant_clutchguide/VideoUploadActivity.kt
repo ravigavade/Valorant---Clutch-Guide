@@ -7,17 +7,26 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 import kotlinx.coroutines.launch
@@ -26,6 +35,9 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.compose.ui.viewinterop.AndroidView
+import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 
 class VideoUploadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,30 +93,66 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+//            .padding(16.dp)
+            .background(DarkBlueGray)
+            .statusBarsPadding()
     ) {
-        Button(
-            onClick = {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                pickVideoLauncher.launch(intent)
-            },
-            modifier = Modifier.fillMaxWidth()
+//        Button(
+//            onClick = {
+//                val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+//                pickVideoLauncher.launch(intent)
+//            },
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Pick Video")
+//        }
+
+        Text(
+            "Upload a video to Community Posts",
+            fontFamily = valo, color = Color.White,
+            fontSize = 30.sp,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        )
+//        Spacer(modifier = Modifier.height(16.dp))
+        Text("In this section, you can upload your Valorant clips to share with the community. Please note that all submissions go through an approval process, which may take between 6 to 12 hours. Make sure to name your clips with the display name you want to appear in the community.",
+//            fontFamily = valo,
+//            color = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .padding(16.dp)
+                .clickable { val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                    pickVideoLauncher.launch(intent)},
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(containerColor = MuchDarkBlueGray),
         ) {
-            Text("Pick Video")
+            Box(modifier = Modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_file_upload_24), // Replace with your drawable
+                    contentDescription = "Pick Video",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+//        Spacer(modifier = Modifier.height(16.dp))
 
         selectedVideoUri?.let {
-            Text("Selected Video: ", fontFamily = valo)
+            Text("Selected Video: ", fontFamily = valo, modifier = Modifier.padding(horizontal = 16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+//            Spacer(modifier = Modifier.height(16.dp))
 
             // Video Preview using ExoPlayer
             AndroidView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(200.dp)
+                    .padding(16.dp),
                 factory = { context ->
                     PlayerView(context).apply {
                         player = exoPlayer
@@ -114,7 +162,7 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+//        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
@@ -122,13 +170,16 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                     coroutineScope.launch {
                         val success = videoManager.uploadCommunityVideo(uri, context)
                         Log.d("Video Upload", "Upload successful: $success")
+                        Toast.makeText(context, "Upload successful: $success", Toast.LENGTH_SHORT).show()
                     }
                 }
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = RedPrimary),
             enabled = selectedVideoUri != null
         ) {
-            Text("Upload Video")
+            Text("Upload Video", fontFamily = valo, color = Color.White )
         }
     }
 

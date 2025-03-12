@@ -1,5 +1,6 @@
 package com.csaim.valorant_clutchguide
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -89,12 +90,16 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                context.startActivity(Intent(context, ContentScreen::class.java).apply {
-                    putExtra("mapName", selectedMap)
-                    putExtra("agentName", selectedAgent)
-                    putExtra("side", selectedSide)
-                    putExtra("site", selectedSite)
-                })
+                val activity = context as? Activity // Ensure the context is an Activity before calling finish
+                context.startActivity(
+                    Intent(context, ContentScreen::class.java).apply {
+                        putExtra("mapName", selectedMap)
+                        putExtra("agentName", selectedAgent)
+                        putExtra("side", selectedSide)
+                        putExtra("site", selectedSite)
+                    }
+                )
+                activity?.finish() // Finish the current activity AFTER starting the new one
             },
             enabled = selectedSide != null && (selectedSide == "defSide" || selectedSite != null),
             modifier = Modifier.fillMaxWidth(),
@@ -102,6 +107,7 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
         ) {
             Text("Continue", fontSize = 18.sp, color = Color.White)
         }
+
     }
 }
 
