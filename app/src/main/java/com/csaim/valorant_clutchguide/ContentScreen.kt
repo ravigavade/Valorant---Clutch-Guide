@@ -159,7 +159,6 @@ fun VideoScreen(
         }
     } else {
         // Display the videos in a scrollable list
-//            Spacer(modifier = Modifier.height(16.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -168,6 +167,7 @@ fun VideoScreen(
                 .statusBarsPadding()
         ) {
 
+            Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
