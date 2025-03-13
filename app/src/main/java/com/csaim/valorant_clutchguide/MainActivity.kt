@@ -94,7 +94,10 @@ fun home_screen(modifier: Modifier = Modifier) {
         modifier = Modifier.background(Color.Gray),
         drawerContent = {
             ModalDrawerSheet(
-                modifier = Modifier.width(250.dp)
+                modifier = Modifier.width(250.dp).statusBarsPadding().padding(bottom = 16.dp),
+                drawerContainerColor = DarkBlueGray,
+                drawerContentColor = Color.White,
+                drawerShape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -117,6 +120,8 @@ fun home_screen(modifier: Modifier = Modifier) {
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
+
                             .clickable {  val intent = Intent(context, CommunityPosts::class.java)
                                 context.startActivity(intent)
                             }
@@ -144,6 +149,7 @@ fun home_screen(modifier: Modifier = Modifier) {
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
 
                             .clickable {  val intent = Intent(context, PatchNotes::class.java)
                                 context.startActivity(intent)
@@ -167,13 +173,44 @@ fun home_screen(modifier: Modifier = Modifier) {
                             modifier = Modifier.padding(16.dp)
                         )
                     }
+                    Row(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth()
+
+
+                            .clickable {  val intent = Intent(context, VideoUploadActivity::class.java)
+                                context.startActivity(intent)
+                            }
+                    ) {
+                        Card(
+                            shape = RoundedCornerShape(5.dp),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.baseline_slow_motion_video_24),
+                                contentDescription = "Instagram Icon",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text(
+                            "Post clips",
+                            color = Color.White,
+
+                            fontSize = 18.sp,
+                            fontFamily = valo,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                     Divider()
+
 
 
                     // Menu items
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
+
 
                             .clickable {
                                 context.startActivity(
@@ -207,6 +244,8 @@ fun home_screen(modifier: Modifier = Modifier) {
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
+
 
                             .clickable {
                                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
@@ -230,38 +269,39 @@ fun home_screen(modifier: Modifier = Modifier) {
                             modifier = Modifier.padding(16.dp)
                         )
                     }
+
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
 
-                            .clickable {  val intent = Intent(context, VideoUploadActivity::class.java)
-                                context.startActivity(intent)
-                            }
+//                            .clickable {  val intent = Intent(context, CommunityPosts::class.java)
+//                                context.startActivity(intent)
+//                            }
                     ) {
-                        Card(
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
                             Image(
-                                painter = painterResource(id = R.drawable.baseline_slow_motion_video_24),
-                                contentDescription = "Instagram Icon",
+                                painter = painterResource(id = R.drawable.privacy),
+                                contentDescription = "Privacy Policy",
                                 modifier = Modifier.size(50.dp)
                             )
-                        }
                         Text(
-                            "Your clip",
+                            "Policy",
+                            fontFamily = valo,
+                            fontSize = 20.sp,
                             color = Color.White,
 
-                            fontSize = 18.sp,
-                            fontFamily = valo,
+                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(16.dp)
                         )
                     }
 
 
 
+
                     Row(
                         modifier = Modifier
                             .padding(8.dp)
+                            .fillMaxWidth()
 
                             .clickable {
                                 context.startActivity(
@@ -812,6 +852,7 @@ fun DropDownDemo() {
             Button(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
+                    .padding(bottom = 5.dp)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(5.dp), // This sets the rounded corners
                 colors = ButtonDefaults.buttonColors(

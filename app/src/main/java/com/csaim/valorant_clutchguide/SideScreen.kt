@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
@@ -52,65 +53,99 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
     var selectedSite by remember { mutableStateOf<String?>(null) }
     val scrollState = rememberScrollState()
 
-    Column(
+    Box( // Box to position the button at the bottom
         modifier = Modifier
-            .background(DarkBlueGray)
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState)
-            .statusBarsPadding()
+            .background(DarkBlueGray)
     ) {
-//        Text(text = "Map: $selectedMap", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-//        Text(text = "Agent: $selectedAgent", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-//        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DarkBlueGray)
 
-        Text(text = "Choose Your Side", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        SideSelectionCard("Attacker's Side", R.drawable.attackersside, selectedSide == "atkSide") {
-            selectedSide = "atkSide"
-            selectedSite = null // Reset site when changing side
-        }
-        SideSelectionCard("Defender's Side", R.drawable.defendersside, selectedSide == "defSide") {
-            selectedSide = "defSide"
-            selectedSite = null // Reset site when changing side
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Choose Your Site", fontFamily = valo, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        SiteSelectionCard("Site A", R.drawable.abyss, selectedSite == "siteA", selectedSide != null) {
-            selectedSite = "siteA"
-        }
-        SiteSelectionCard("Site B", R.drawable.fade, selectedSite == "siteB", selectedSide != null) {
-            selectedSite = "siteB"
-        }
-        SiteSelectionCard("Mid", R.drawable.cypher, selectedSite == "mid", selectedSide != null) {
-            selectedSite = "mid"
-        }
-
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = {
-                val activity = context as? Activity // Ensure the context is an Activity before calling finish
-                context.startActivity(
-                    Intent(context, ContentScreen::class.java).apply {
-                        putExtra("mapName", selectedMap)
-                        putExtra("agentName", selectedAgent)
-                        putExtra("side", selectedSide)
-                        putExtra("site", selectedSite)
-                    }
-                )
-//                activity?.finish() // Finish the current activity AFTER starting the new one
-            },
-            enabled = selectedSide != null && (selectedSide == "defSide" || selectedSite != null),
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = RedPrimary)
         ) {
-            Text("Continue",
-                fontFamily = valo,
-                fontSize = 18.sp,
-                color = Color.White)
-        }
+            Column(
+                modifier = Modifier
+                    .weight(1f) // This makes the rest of the content scrollable
+                    .verticalScroll(scrollState)
+                    .statusBarsPadding()
+                    .background(MuchDarkBlueGray)
+            .padding(16.dp)
 
+            ) {
+                Text(
+                    text = "Choose Your Side",
+                    fontFamily = valo,
+                    color = Color.White,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                SideSelectionCard("Attacker's Side", R.drawable.attackersside, selectedSide == "atkSide") {
+                    selectedSide = "atkSide"
+                    selectedSite = null // Reset site when changing side
+                }
+                SideSelectionCard("Defender's Side", R.drawable.defendersside, selectedSide == "defSide") {
+                    selectedSide = "defSide"
+                    selectedSite = null // Reset site when changing side
+                }
+
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Divider(color = DarkBlueGray, thickness = 1.dp)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Choose Your Site",
+                    fontFamily = valo,
+                    color = Color.White,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                SiteSelectionCard("Site A", R.drawable.abyss, selectedSite == "siteA", selectedSide != null) {
+                    selectedSite = "siteA"
+                }
+                SiteSelectionCard("Site B", R.drawable.fade, selectedSite == "siteB", selectedSide != null) {
+                    selectedSite = "siteB"
+                }
+
+                // ✅ Only show "Site C" if the selected map is "Haven"
+                if (selectedMap == "Haven") {
+                    SiteSelectionCard("Site C", R.drawable.haven, selectedSite == "siteC", selectedSide != null) {
+                        selectedSite = "siteC"
+                    }
+                }
+            }
+
+            // ✅ Button Stuck at Bottom
+            Button(
+                onClick = {
+                    val activity = context as? Activity // Ensure the context is an Activity before calling finish
+                    context.startActivity(
+                        Intent(context, ContentScreen::class.java).apply {
+                            putExtra("mapName", selectedMap)
+                            putExtra("agentName", selectedAgent)
+                            putExtra("side", selectedSide)
+                            putExtra("site", selectedSite)
+                        }
+                    )
+                },
+                enabled = selectedSide != null && (selectedSide == "atkSide" && selectedSite != null || selectedSide == "defSide" && selectedSite != null), // ✅ Fixed condition
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .padding(bottom = 16.dp), // Ensures it's above the navigation bar
+                colors = ButtonDefaults.buttonColors(containerColor = RedPrimary)
+            ) {
+                Text(
+                    "Continue",
+                    fontFamily = valo,
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
+            }
+
+
+        }
     }
 }
 

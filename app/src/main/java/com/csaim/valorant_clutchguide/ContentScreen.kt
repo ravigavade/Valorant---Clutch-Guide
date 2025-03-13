@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -37,6 +38,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
@@ -148,14 +150,34 @@ fun VideoScreen(
     }
 
     if (isLoading) {
-        // Show a loading message or indicator
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Loading videos...", color = Color.White)
+        Box(
+            modifier = Modifier.fillMaxSize().background(DarkBlueGray),
+            contentAlignment = Alignment.Center,
+
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                CircularProgressIndicator(
+                    color = RedPrimary, // Customize color if needed
+                    strokeWidth = 4.dp
+                )
+//                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
-    } else if (isError) {
+    }
+    else if (isError) {
         // Show an error message if the fetch fails
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Failed to load videos. Please try again.", color = Color.Red)
+        Box(modifier = Modifier.fillMaxSize().background(DarkBlueGray), contentAlignment = Alignment.Center) {
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+            Text("Failed to load videos. Please try again.", fontFamily = valo, color = Color.Red)
+
+                }
         }
     } else {
         // Display the videos in a scrollable list
