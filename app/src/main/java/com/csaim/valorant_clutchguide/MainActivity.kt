@@ -263,7 +263,11 @@ fun home_screen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .padding(8.dp)
 
-                            .clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram))) }
+                            .clickable {
+                                context.startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(instagram)
+                                    ))
+                            }
                     ) {
                         Card(
                             shape = CircleShape,
@@ -526,10 +530,11 @@ fun NonActiveMaps(navController: NavController) {
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                     onClick = {
                         // Pass the selected map to AgentScreen using an extra
-                        val intent = Intent(context, AgentScreen::class.java).apply {
-                            putExtra("mapName", mapName)
-                        }
-                        context.startActivity(intent)
+//                        val intent = Intent(context, AgentScreen::class.java).apply {
+//                            putExtra("mapName", mapName)
+//                        }
+//                        context.startActivity(intent)
+                        Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                     }
                 ) {
                     Box(

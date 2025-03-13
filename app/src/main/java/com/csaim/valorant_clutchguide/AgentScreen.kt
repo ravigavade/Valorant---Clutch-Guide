@@ -65,7 +65,7 @@ class AgentScreen : ComponentActivity() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAYO", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo" )
+                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAYO", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo","Waylay"  )
 
                     LazyVerticalGrid(
                         modifier = Modifier.padding(horizontal = 7.dp),
@@ -142,7 +142,7 @@ fun getAgentImageRes(agentName: String): Int {
         "Skye" -> R.drawable.skye
         "Yoru" -> R.drawable.yoru
         "Astra" -> R.drawable.astra
-        "KAY/O" -> R.drawable.kayo
+        "KAYO" -> R.drawable.kayo
         "Chamber" -> R.drawable.chamber
         "Neon" -> R.drawable.neon
         "Fade" -> R.drawable.fade
@@ -158,6 +158,7 @@ fun getAgentImageRes(agentName: String): Int {
         "Omen" -> R.drawable.omen
         "Vyse" -> R.drawable.vyse
         "Tejo" -> R.drawable.tejo
-        else -> R.drawable.cypher // Default image if none is found
+        "Waylay" -> R.drawable.waylay
+        else -> R.drawable.placeholder // Default image if none is found
     }
 }

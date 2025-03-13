@@ -159,18 +159,27 @@ fun VideoScreen(
         }
     } else {
         // Display the videos in a scrollable list
-        LazyColumn(
+//            Spacer(modifier = Modifier.height(16.dp))
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .padding(16.dp)
                 .background(DarkBlueGray)
+                        .padding(top=10.dp)
                 .statusBarsPadding()
-
         ) {
-            items(videoList) { video ->
-                VideoCard(video)
-//                Spacer(modifier = Modifier.height(16.dp))
-//                Divider()//
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(DarkBlueGray)
+//                    .statusBarsPadding()
+
+            ) {
+                items(videoList) { video ->
+                    VideoCard(video)
+    //                Spacer(modifier = Modifier.height(16.dp))
+    //                Divider()//
+                }
             }
         }
     }

@@ -99,13 +99,16 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
                         putExtra("site", selectedSite)
                     }
                 )
-                activity?.finish() // Finish the current activity AFTER starting the new one
+//                activity?.finish() // Finish the current activity AFTER starting the new one
             },
             enabled = selectedSide != null && (selectedSide == "defSide" || selectedSite != null),
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = RedPrimary)
         ) {
-            Text("Continue", fontSize = 18.sp, color = Color.White)
+            Text("Continue",
+                fontFamily = valo,
+                fontSize = 18.sp,
+                color = Color.White)
         }
 
     }
