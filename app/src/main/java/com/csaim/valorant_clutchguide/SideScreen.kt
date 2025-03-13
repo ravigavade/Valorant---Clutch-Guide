@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.DarkRed
 import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
@@ -69,7 +70,7 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
                     .weight(1f) // This makes the rest of the content scrollable
                     .verticalScroll(scrollState)
                     .statusBarsPadding()
-                    .background(MuchDarkBlueGray)
+                    .background(DarkBlueGray)
             .padding(16.dp)
 
             ) {
@@ -132,9 +133,15 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
                 enabled = selectedSide != null && (selectedSide == "atkSide" && selectedSite != null || selectedSide == "defSide" && selectedSite != null), // ✅ Fixed condition
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
+//                    .padding(bottom = 5.dp)
+
                     .padding(bottom = 16.dp), // Ensures it's above the navigation bar
-                colors = ButtonDefaults.buttonColors(containerColor = RedPrimary)
+                shape = RoundedCornerShape(5.dp), // This sets the rounded corners
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DarkRed,
+                    contentColor = Color.White
+                ),
             ) {
                 Text(
                     "Continue",
