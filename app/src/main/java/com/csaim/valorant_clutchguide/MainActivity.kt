@@ -78,7 +78,8 @@ class MainActivity : ComponentActivity() {
 fun home_screen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
-    val instagram = "https://www.instagram.com/valorant_clutch_guide/"
+    val instagram = "https://www.instagram.com/_valo_hub_/"
+    val yt = "https://www.youtube.com/channel/UC1Smq7r743syyVgEzzVDHzQ"
     val PrivacyPolicy= "https://github.com/ravigavade/ValoHub-Privacy-Policy/blob/main/Privacy%20Policy"
 
     // This is the drawer
@@ -204,12 +205,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 
 
                             .clickable {
-                                context.startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(instagram)
-                                    )
-                                )
+                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(yt)))
                             }
                     ) {
                         Card(

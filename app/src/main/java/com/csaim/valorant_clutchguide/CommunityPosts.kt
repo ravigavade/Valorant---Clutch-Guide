@@ -281,12 +281,14 @@ fun FirstTimeDialog(onDismiss: () -> Unit) {
         onDismissRequest = { onDismiss() },
         title = {
             Text(
-                text = "Welcome to the Community Post",
+                text = "Welcome to the Community Posts",
                 fontFamily = valo,
                 color = RedPrimary
             ) },
         text = {
-            Text("This is a community post type page where all videos are for the gamers and by the gamers. Please maintain courtesy while uploading and watching the content.", color = Color.White)
+            Text("Welcome to the Community Posts section – a place where Valorant players share, learn, and showcase their best lineups and outplays. This space is built by gamers, for gamers. Please be respectful while uploading and engaging with content. Let's keep the community helpful and competitive!\n" +
+                    "\n" +
+                    "For the best viewing experience, rotate your phone to landscape mode while watching clips.", color = Color.White)
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
