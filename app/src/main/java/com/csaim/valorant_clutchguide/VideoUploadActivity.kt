@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -16,13 +18,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -45,9 +50,21 @@ class VideoUploadActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    VideoUploadScreen(Modifier.padding(innerPadding))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // Change the status bar color to MuchDarkBlueGray
+                    window.statusBarColor = DarkBlueGray.toArgb()
+
+                    // Set the status bar text and icon color to white
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() // This keeps the icons/text white
+
+                    // Ensure the status bar remains visible
+                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                } else {
+                    // For older versions, you can just set the status bar color
+                    window.statusBarColor = DarkBlueGray.toArgb()
                 }
+                    VideoUploadScreen()
+
             }
         }
     }
@@ -93,8 +110,9 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-//            .padding(16.dp)
+            .padding(top=16.dp)
             .background(DarkBlueGray)
+            .verticalScroll(rememberScrollState())
             .statusBarsPadding()
     ) {
 //        Button(
@@ -108,15 +126,19 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
 //        }
 
         Text(
-            "Upload a video to Community Posts",
-            fontFamily = valo, color = Color.White,
-            fontSize = 30.sp,
+            "Clip Submission page",
+            fontFamily = valo, color = RedPrimary,
+            fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         )
 //        Spacer(modifier = Modifier.height(16.dp))
-        Text("In this section, you can upload your Valorant clips to share with the community. Please note that all submissions go through an approval process, which may take between 6 to 12 hours. Make sure to name your clips with the display name you want to appear in the community.",
+        Text("This is your space to showcase your best gameplay moments, strategic lineups, and creative plays to the Valorant community. Whether you’ve mastered a pixel-perfect lineup, pulled off an incredible clutch, or discovered a new strategy, this platform allows you to share your insights and contribute to the collective knowledge of players.\n" +
+                "\n" +
+                "To maintain high-quality content, all submissions go through a review process, which typically takes between 6 to 12 hours. Once approved, your clip will be publicly available and displayed under the name you provide. Please ensure that you name your clips appropriately, as this will be the name that appears alongside your submission in the community.\n" +
+                "\n" +
+                "By sharing your clips, you not only help fellow players improve but also gain recognition for your expertise. Start uploading now and be a part of the growing Valorant strategy hub!",
 //            fontFamily = valo,
-//            color = Color.White,
+            color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp))
@@ -143,7 +165,7 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
 //        Spacer(modifier = Modifier.height(16.dp))
 
         selectedVideoUri?.let {
-            Text("Selected Video: ", fontFamily = valo, modifier = Modifier.padding(horizontal = 16.dp))
+            Text("Selected Video: ", fontFamily = valo, modifier = Modifier.padding(horizontal = 16.dp), color = Color.White)
 
 //            Spacer(modifier = Modifier.height(16.dp))
 
@@ -176,11 +198,13 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth()
             .padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(containerColor = RedPrimary),
             enabled = selectedVideoUri != null
         ) {
             Text("Upload Video", fontFamily = valo, color = Color.White )
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 
     // Show an AlertDialog if file is too large

@@ -9,13 +9,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -87,6 +79,7 @@ fun home_screen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var drawerState by remember { mutableStateOf(false) }
     val instagram = "https://www.instagram.com/valorant_clutch_guide/"
+    val PrivacyPolicy= "https://github.com/ravigavade/ValoHub-Privacy-Policy/blob/main/Privacy%20Policy"
 
     // This is the drawer
     ModalNavigationDrawer(
@@ -107,9 +100,9 @@ fun home_screen(modifier: Modifier = Modifier) {
                         .fillMaxSize()
                 ) {
                     Text(
-                        "Valorant - Clutch Guide",
+                        "ValoHub",
                         fontFamily = valo,
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(16.dp)
@@ -139,10 +132,10 @@ fun home_screen(modifier: Modifier = Modifier) {
                         Text(
                             "Community",
                             fontFamily = valo,
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             color = Color.White,
 
-                            fontWeight = FontWeight.Bold,
+//                            fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(16.dp)
                         )
                     }
@@ -183,17 +176,15 @@ fun home_screen(modifier: Modifier = Modifier) {
                                 context.startActivity(intent)
                             }
                     ) {
-                        Card(
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
+
                             Image(
-                                painter = painterResource(id = R.drawable.baseline_slow_motion_video_24),
-                                contentDescription = "Instagram Icon",
+                                painter = painterResource(id = R.drawable.postvideos),
+                                contentDescription = "Upload Clips Icon",
                                 modifier = Modifier.size(50.dp)
                             )
-                        }
+
                         Text(
-                            "Post clips",
+                            "Upload Clip",
                             color = Color.White,
 
                             fontSize = 18.sp,
@@ -251,15 +242,13 @@ fun home_screen(modifier: Modifier = Modifier) {
                                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagram)))
                             }
                     ) {
-                        Card(
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
+
                             Image(
                                 painter = painterResource(id = R.drawable.insta),
                                 contentDescription = "Instagram Icon",
                                 modifier = Modifier.size(50.dp)
                             )
-                        }
+
                         Text(
                             "Instagram",
                             color = Color.White,
@@ -270,30 +259,33 @@ fun home_screen(modifier: Modifier = Modifier) {
                         )
                     }
 
-                    Row(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()
 
-//                            .clickable {  val intent = Intent(context, CommunityPosts::class.java)
-//                                context.startActivity(intent)
+                    //privacy policy
+//                    Row(
+//                        modifier = Modifier
+//                            .padding(8.dp)
+//                            .fillMaxWidth()
+//                            .clickable {
+//                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PrivacyPolicy)))
 //                            }
-                    ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.privacy),
-                                contentDescription = "Privacy Policy",
-                                modifier = Modifier.size(50.dp)
-                            )
-                        Text(
-                            "Policy",
-                            fontFamily = valo,
-                            fontSize = 20.sp,
-                            color = Color.White,
-
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
+//
+////
+//                    ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.privacy),
+//                                contentDescription = "Privacy Policy",
+//                                modifier = Modifier.size(50.dp)
+//                            )
+//                        Text(
+//                            "Policy",
+//                            fontFamily = valo,
+//                            fontSize = 18.sp,
+//                            color = Color.White,
+//
+////                            fontWeight = FontWeight.Bold,
+//                            modifier = Modifier.padding(16.dp)
+//                        )
+//                    }
 
 
 
@@ -303,10 +295,8 @@ fun home_screen(modifier: Modifier = Modifier) {
                             .padding(8.dp)
                             .fillMaxWidth()
 
-                            .clickable {
-                                context.startActivity(
-                                    Intent(Intent.ACTION_VIEW, Uri.parse(instagram)
-                                    ))
+                            .clickable {  val intent = Intent(context, AboutScreen::class.java)
+                                context.startActivity(intent)
                             }
                     ) {
                         Card(
@@ -805,6 +795,7 @@ fun DropDownDemo() {
                         isSiteExpanded.value = !isSiteExpanded.value
                     }
                 ) {
+
                     Text(
                         text = sites[itemPosition4.value],
                         fontFamily = valo,

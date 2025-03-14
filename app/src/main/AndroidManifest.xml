@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-
 
     <application
         android:allowBackup="true"
@@ -17,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ValorantClutchGuide"
         tools:targetApi="31">
+        <activity
+            android:name=".AboutScreen"
+            android:exported="false"
+            android:label="@string/title_activity_about_screen"
+            android:theme="@style/Theme.ValorantClutchGuide" />
         <activity
             android:name=".VideoUploadActivity"
             android:exported="false"

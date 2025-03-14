@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Valorant - Clutch Guide</string>
+    <string name="app_name">ValoHub</string>
     <string name="title_activity_team_screen">TeamScreen</string>
     <string name="title_activity_attack_screen">AttackScreen</string>
     <string name="title_activity_defence_screen">DefenceScreen</string>
@@ -10,4 +10,5 @@
     <string name="title_activity_community_posts">CommunityPosts</string>
     <string name="title_activity_about_us">AboutUS</string>
     <string name="title_activity_video_upload">VideoUploadActivity</string>
+    <string name="title_activity_about_screen">AboutScreen</string>
 </resources>

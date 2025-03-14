@@ -38,6 +38,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
+import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
@@ -169,7 +170,7 @@ fun VideoScreen(
     }
     else if (isError) {
         // Show an error message if the fetch fails
-        Box(modifier = Modifier.fillMaxSize().background(DarkBlueGray), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize().background(MuchDarkBlueGray), contentAlignment = Alignment.Center) {
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
