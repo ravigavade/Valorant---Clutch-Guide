@@ -46,6 +46,8 @@ import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
 import android.database.Cursor
 import android.provider.OpenableColumns
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 
 class VideoUploadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +73,20 @@ class VideoUploadActivity : ComponentActivity() {
             }
         }
     }
+//    override fun onStop() {
+//        super.onStop()
+//        if (!isChangingConfigurations) {
+//            finish()  // ✅ Finish the activity only if it's not due to configuration change (like rotation)
+//        }
+//    }
+
+
+
+
+
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 fun VideoUploadScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -128,10 +142,17 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
         )
 
         Text(
-            "This is your space to showcase your best gameplay moments, strategic lineups, and creative plays to the Valorant community. [...]",
+            """
+            This is your space to showcase your best gameplay moments, strategic lineups, and creative plays to the Valorant community. Whether you’ve mastered a pixel-perfect lineup, pulled off an incredible clutch, or discovered a new strategy, this platform allows you to share your insights and contribute to the collective knowledge of players.
+        
+            To maintain high-quality content, all submissions go through a review process, which typically takes between 6 to 12 hours. Once approved, your clip will be publicly available and displayed under the name you provide. Please ensure that you name your clips appropriately, as this will be the name that appears alongside your submission in the community.
+    """.trimIndent(),
             color = Color.White,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         )
+
 
         Card(
             modifier = Modifier
@@ -166,9 +187,16 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                     PlayerView(context).apply {
                         player = exoPlayer
                         useController = true
+
+                        controllerAutoShow = false
+
+
                     }
                 }
             )
+
+
+
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -190,8 +218,14 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                     coroutineScope.launch {
                         val success = videoManager.uploadCommunityVideo(uri, context)
                         Log.d("Video Upload", "Upload successful: $success")
-                        Toast.makeText(context, "Upload successful: $success", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context, "Upload successful: $success", Toast.LENGTH_SHORT).show()
                         isUploading = false  // Hide progress bar
+
+                        if (success) {
+                            // ✅ Finish the activity after successful upload
+                            Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT).show()
+                            (context as? Activity)?.finish()
+                        }
                     }
                 }
             },

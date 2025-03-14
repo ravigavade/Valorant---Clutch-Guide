@@ -49,15 +49,11 @@ import com.csaim.valorant_clutchguide.ui.theme.valo
 
 class MainActivity : ComponentActivity() {
 
-    companion object {
-        var exoPlayer: ExoPlayer? = null  // Shared ExoPlayer instance
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize ExoPlayer
-        exoPlayer = ExoPlayer.Builder(this).build()
 
 
         enableEdgeToEdge()
@@ -88,15 +84,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    override fun onPause() {
-        super.onPause()
-        exoPlayer?.playWhenReady = false  // ✅ Pause video when app is minimized
-    }
 
-    override fun onResume() {
-        super.onResume()
-        exoPlayer?.playWhenReady = true  // ✅ Resume video when app is active
-    }
 
 }
 

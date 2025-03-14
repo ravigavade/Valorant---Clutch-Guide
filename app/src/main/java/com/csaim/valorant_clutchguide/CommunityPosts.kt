@@ -110,7 +110,7 @@ fun VideoScreen() {
     // Fetch videos asynchronously
     LaunchedEffect(Unit) {
         try {
-            videoList = videoManager.retrieveCommunityVideos()
+            videoList = videoManager.retrieveCommunityVideos().shuffled()
             isError = videoList.isEmpty()
         } catch (e: Exception) {
             Log.e("Video Fetch", "Error fetching videos", e)
@@ -197,7 +197,7 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black),
+                .background(DarkBlueGray),
 //                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -207,7 +207,7 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontSize = 18.sp,
 
-                fontFamily = valo,
+//                fontFamily = valo,
             )
             VideoPlayer1(video.url, Modifier.fillMaxHeight()) // Assign weight dynamically
         }
@@ -220,6 +220,7 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
 @Composable
 fun VideoPlayer1(videoUrl: String, fillMaxHeight: Modifier) {
     val context = LocalContext.current
+
     val exoPlayer = remember(videoUrl) {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(videoUrl))
@@ -248,6 +249,8 @@ fun VideoPlayer1(videoUrl: String, fillMaxHeight: Modifier) {
                     player = exoPlayer
                     useController = false // Hide default controls
                     controllerAutoShow = false
+                    controllerHideOnTouch = true
+
                 }
             },
             modifier = Modifier.matchParentSize()
