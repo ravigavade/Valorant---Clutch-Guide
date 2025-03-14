@@ -1,6 +1,7 @@
 package com.csaim.valorant_clutchguide
 
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,8 +48,18 @@ import com.csaim.valorant_clutchguide.ui.theme.ValorantClutchGuideTheme
 import com.csaim.valorant_clutchguide.ui.theme.valo
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        var exoPlayer: ExoPlayer? = null  // Shared ExoPlayer instance
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize ExoPlayer
+        exoPlayer = ExoPlayer.Builder(this).build()
+
+
         enableEdgeToEdge()
         setContent {
             ValorantClutchGuideTheme {
@@ -69,9 +81,23 @@ class MainActivity : ComponentActivity() {
 
                 home_screen()
 
+
+
             }
         }
     }
+
+
+    override fun onPause() {
+        super.onPause()
+        exoPlayer?.playWhenReady = false  // ✅ Pause video when app is minimized
+    }
+
+    override fun onResume() {
+        super.onResume()
+        exoPlayer?.playWhenReady = true  // ✅ Resume video when app is active
+    }
+
 }
 
 @Composable
@@ -284,6 +310,36 @@ fun home_screen(modifier: Modifier = Modifier) {
 //                    }
 
 
+                    //contact us
+//                    Row(
+//                        modifier = Modifier
+//                            .padding(8.dp)
+//                            .fillMaxWidth()
+//
+//                            .clickable {  val intent = Intent(context, ContactUs()::class.java)
+//                                context.startActivity(intent)
+//                            }
+//                    ) {
+//
+//                            Image(
+//                                painter = painterResource(id = R.drawable.help_99dp_ff4654),
+//                                contentDescription = "App Icon",
+//                                modifier = Modifier
+//                                    .size(50.dp)
+//                                    .clip(CircleShape)
+//                            )
+//
+//                        Text(
+//                            "Contact us",
+//                            fontSize = 18.sp,
+//                            color = Color.White,
+//
+//                            fontFamily = valo,
+//                            modifier = Modifier.padding(16.dp)
+//                        )
+//                    }
+
+
 
 
                     Row(
@@ -474,7 +530,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 @Composable
 fun ActiveMaps(navController: NavController) {
     val context = LocalContext.current
-    val maps = listOf("Abyss","Pearl","Fracture","Split", "Haven", "Lotus","bind")
+    val maps = listOf("Abyss","Pearl","Fracture","Lotus","Split", "Haven", "bind")
 
     Column(
         modifier = Modifier

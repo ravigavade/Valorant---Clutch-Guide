@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -43,6 +44,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.csaim.valorant_clutchguide.ui.theme.DarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.MuchDarkBlueGray
 import com.csaim.valorant_clutchguide.ui.theme.RedPrimary
+import android.database.Cursor
+import android.provider.OpenableColumns
 
 class VideoUploadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,15 +76,14 @@ class VideoUploadActivity : ComponentActivity() {
 @Composable
 fun VideoUploadScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val videoManager = remember { VideoManager() }  // Initialize VideoManager
+    val videoManager = remember { VideoManager() }
     var selectedVideoUri by remember { mutableStateOf<Uri?>(null) }
-    var showSizeLimitDialog by remember { mutableStateOf(false) }  // State for showing dialog
+    var showSizeLimitDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    var isUploading by remember { mutableStateOf(false) }  // Progress tracking
 
-    // ExoPlayer Instance
-    val exoPlayer = remember {
-        ExoPlayer.Builder(context).build()
-    }
+    // 🔥 Fix: Move ExoPlayer to remember to avoid flickering
+    val exoPlayer = remember { ExoPlayer.Builder(context).build() }
 
     val pickVideoLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -90,17 +92,20 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
             result.data?.data?.let { uri ->
                 val file = uriToFile(uri, context)
                 if (file != null) {
-                    val fileSizeMB = file.length() / (1024 * 1024)  // Convert bytes to MB
-                    if (fileSizeMB > 30) {
-                        showSizeLimitDialog = true  // Show error dialog if file is too large
+                    val fileSizeMB = file.length() / (1024 * 1024)
+                    if (fileSizeMB > 50) {
+                        showSizeLimitDialog = true
                     } else {
                         selectedVideoUri = uri
                         Log.d("Video Upload", "Selected video: Size: ${fileSizeMB}MB")
 
-                        // Prepare the video for playback
-                        val mediaItem = MediaItem.fromUri(uri)
-                        exoPlayer.setMediaItem(mediaItem)
-                        exoPlayer.prepare()
+                        // 🔥 Fix: Reset ExoPlayer when new video is selected
+                        exoPlayer.apply {
+                            stop()
+                            clearMediaItems()
+                            setMediaItem(MediaItem.fromUri(uri))
+                            prepare()
+                        }
                     }
                 }
             }
@@ -110,66 +115,48 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top=16.dp)
+            .padding(top = 16.dp)
             .background(DarkBlueGray)
             .verticalScroll(rememberScrollState())
             .statusBarsPadding()
     ) {
-//        Button(
-//            onClick = {
-//                val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-//                pickVideoLauncher.launch(intent)
-//            },
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Text("Pick Video")
-//        }
-
         Text(
-            "Clip Submission page",
+            "Clip Submission Page",
             fontFamily = valo, color = RedPrimary,
             fontSize = 25.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
         )
-//        Spacer(modifier = Modifier.height(16.dp))
-        Text("This is your space to showcase your best gameplay moments, strategic lineups, and creative plays to the Valorant community. Whether you’ve mastered a pixel-perfect lineup, pulled off an incredible clutch, or discovered a new strategy, this platform allows you to share your insights and contribute to the collective knowledge of players.\n" +
-                "\n" +
-                "To maintain high-quality content, all submissions go through a review process, which typically takes between 6 to 12 hours. Once approved, your clip will be publicly available and displayed under the name you provide. Please ensure that you name your clips appropriately, as this will be the name that appears alongside your submission in the community.\n" +
-                "\n" +
-                "By sharing your clips, you not only help fellow players improve but also gain recognition for your expertise. Start uploading now and be a part of the growing Valorant strategy hub!",
-//            fontFamily = valo,
+
+        Text(
+            "This is your space to showcase your best gameplay moments, strategic lineups, and creative plays to the Valorant community. [...]",
             color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp))
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        )
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
                 .padding(16.dp)
-                .clickable { val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                    pickVideoLauncher.launch(intent)},
+                .clickable {
+                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                    pickVideoLauncher.launch(intent)
+                },
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = MuchDarkBlueGray),
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Image(
-                    painter = painterResource(id = R.drawable.baseline_file_upload_24), // Replace with your drawable
+                    painter = painterResource(id = R.drawable.baseline_file_upload_24),
                     contentDescription = "Pick Video",
                     modifier = Modifier.fillMaxSize()
                 )
             }
         }
 
-//        Spacer(modifier = Modifier.height(16.dp))
-
         selectedVideoUri?.let {
-            Text("Selected Video: ", fontFamily = valo, modifier = Modifier.padding(horizontal = 16.dp), color = Color.White)
+            Text("Selected Video:", fontFamily = valo, modifier = Modifier.padding(horizontal = 16.dp), color = Color.White)
 
-//            Spacer(modifier = Modifier.height(16.dp))
-
-            // Video Preview using ExoPlayer
             AndroidView(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -178,36 +165,48 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                 factory = { context ->
                     PlayerView(context).apply {
                         player = exoPlayer
-                        useController = true  // Show video controls
+                        useController = true
                     }
                 }
             )
         }
 
-//        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // ✅ Fix: Show progress bar when uploading
+        if (isUploading) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = RedPrimary)
+            }
+        }
 
         Button(
             onClick = {
                 selectedVideoUri?.let { uri ->
+                    isUploading = true  // Show progress bar
                     coroutineScope.launch {
                         val success = videoManager.uploadCommunityVideo(uri, context)
                         Log.d("Video Upload", "Upload successful: $success")
                         Toast.makeText(context, "Upload successful: $success", Toast.LENGTH_SHORT).show()
+                        isUploading = false  // Hide progress bar
                     }
                 }
             },
-            modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             shape = RoundedCornerShape(5.dp),
             colors = ButtonDefaults.buttonColors(containerColor = RedPrimary),
-            enabled = selectedVideoUri != null
+            enabled = selectedVideoUri != null && !isUploading  // Disable while uploading
         ) {
-            Text("Upload Video", fontFamily = valo, color = Color.White )
+            Text("Upload Video", fontFamily = valo, color = Color.White)
         }
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 
-    // Show an AlertDialog if file is too large
+    // Show AlertDialog if file is too large
     if (showSizeLimitDialog) {
         AlertDialog(
             onDismissRequest = { showSizeLimitDialog = false },
@@ -217,7 +216,7 @@ fun VideoUploadScreen(modifier: Modifier = Modifier) {
                 }
             },
             title = { Text("File Size Too Large", fontFamily = valo) },
-            text = { Text("Please select a video smaller than 30MB.", fontFamily = valo) }
+            text = { Text("Please select a video smaller than 50MB.", fontFamily = valo) }
         )
     }
 }
@@ -226,7 +225,11 @@ fun uriToFile(uri: Uri, context: Context): File? {
     return try {
         val contentResolver = context.contentResolver
         val inputStream = contentResolver.openInputStream(uri) ?: return null
-        val tempFile = File.createTempFile("upload_video", ".mp4", context.cacheDir)
+
+        // Extract the original file name
+        val originalFileName = getFileNameFromUri(context, uri) ?: "video_upload.mp4"
+
+        val tempFile = File(context.cacheDir, originalFileName) // Use original name
         inputStream.use { input ->
             tempFile.outputStream().use { output ->
                 input.copyTo(output)
@@ -238,3 +241,19 @@ fun uriToFile(uri: Uri, context: Context): File? {
         null
     }
 }
+
+// Function to extract the real file name from Uri
+fun getFileNameFromUri(context: Context, uri: Uri): String? {
+    var name: String? = null
+    val cursor: Cursor? = context.contentResolver.query(uri, null, null, null, null)
+    cursor?.use {
+        if (it.moveToFirst()) {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (nameIndex != -1) {
+                name = it.getString(nameIndex)
+            }
+        }
+    }
+    return name
+}
+

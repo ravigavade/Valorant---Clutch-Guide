@@ -13,4 +13,5 @@
     <string name="title_activity_about_screen">AboutScreen</string>
     <string name="title_activity_login_page">LoginPage</string>
     <string name="title_activity_register_page">RegisterPage</string>
+    <string name="title_activity_contact_us">ContactUs</string>
 </resources>
