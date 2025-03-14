@@ -17,6 +17,18 @@
         android:theme="@style/Theme.ValorantClutchGuide"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterPage"
+            android:exported="false"
+            android:label="@string/title_activity_register_page"
+            android:theme="@style/Theme.ValorantClutchGuide" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="true"
+            android:label="@string/title_activity_login_page"
+            android:theme="@style/Theme.ValorantClutchGuide">
+
+        </activity>
+        <activity
             android:name=".AboutScreen"
             android:exported="false"
             android:label="@string/title_activity_about_screen"
@@ -77,6 +89,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

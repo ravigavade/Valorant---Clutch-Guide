@@ -11,4 +11,6 @@
     <string name="title_activity_about_us">AboutUS</string>
     <string name="title_activity_video_upload">VideoUploadActivity</string>
     <string name="title_activity_about_screen">AboutScreen</string>
+    <string name="title_activity_login_page">LoginPage</string>
+    <string name="title_activity_register_page">RegisterPage</string>
 </resources>

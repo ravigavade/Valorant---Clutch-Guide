@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.csaim.valorant_clutchguide" />
+                  <option name="mobileSdkAppId" value="1:467437102537:android:121c00b49596a6f2ed7418" />
+                  <option name="projectId" value="valoguide-861f9" />
+                  <option name="projectNumber" value="467437102537" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
