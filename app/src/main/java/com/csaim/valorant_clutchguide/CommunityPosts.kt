@@ -202,7 +202,7 @@ fun VideoCard1(video: VideoData, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = video.name,
+                text = "@"+video.name,
                 modifier.padding(4.dp),
                 color = Color.White,
                 fontSize = 18.sp,
