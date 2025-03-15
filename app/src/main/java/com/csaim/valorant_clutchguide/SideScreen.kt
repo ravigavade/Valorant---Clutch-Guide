@@ -100,10 +100,10 @@ fun SideSelectionContent(selectedMap: String, selectedAgent: String) {
                     fontWeight = FontWeight.Bold
                 )
 
-                SiteSelectionCard("Site A", R.drawable.abyss, selectedSite == "siteA", selectedSide != null) {
+                SiteSelectionCard("Site A", R.drawable.sitea, selectedSite == "siteA", selectedSide != null) {
                     selectedSite = "siteA"
                 }
-                SiteSelectionCard("Site B", R.drawable.fade, selectedSite == "siteB", selectedSide != null) {
+                SiteSelectionCard("Site B", R.drawable.siteb, selectedSite == "siteB", selectedSide != null) {
                     selectedSite = "siteB"
                 }
 
