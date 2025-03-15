@@ -520,7 +520,7 @@ fun home_screen(modifier: Modifier = Modifier) {
 @Composable
 fun ActiveMaps(navController: NavController) {
     val context = LocalContext.current
-    val maps = listOf("Abyss","Pearl","Fracture","Lotus","Split", "Haven", "bind")
+    val maps = listOf("Split", "Haven","Lotus","Fracture","Pearl","Icebox","Ascent",)
 
     Column(
         modifier = Modifier
@@ -553,11 +553,11 @@ fun ActiveMaps(navController: NavController) {
                         Image(
                             painter = painterResource(
                                 when (mapName) {
-                                    "Abyss" -> R.drawable.abyss
+                                    "Icebox" -> R.drawable.icebox
                                     "Pearl" -> R.drawable.pearl
                                     "Fracture" -> R.drawable.fracture
                                     "Split" -> R.drawable.split
-                                    "bind" -> R.drawable.bind
+                                    "Ascent" -> R.drawable.ascent
                                     "Haven" -> R.drawable.haven
                                     "Lotus" -> R.drawable.lotus
                                     else -> R.drawable.cypher
@@ -582,7 +582,7 @@ fun ActiveMaps(navController: NavController) {
 
 @Composable
 fun NonActiveMaps(navController: NavController) {
-    val maps = listOf("Breeze","Icebox","Ascent", "Sunset")
+    val maps = listOf("Breeze", "Sunset", "bind","Abyss")
     val context = LocalContext.current
 
     Column(
@@ -606,7 +606,7 @@ fun NonActiveMaps(navController: NavController) {
 //                            putExtra("mapName", mapName)
 //                        }
 //                        context.startActivity(intent)
-                        Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "$mapName is not in current map pool.", Toast.LENGTH_SHORT).show()
                     }
                 ) {
                     Box(
@@ -616,9 +616,9 @@ fun NonActiveMaps(navController: NavController) {
                         Image(
                             painter = painterResource(
                                 when (mapName) {
-                                    "Ascent" -> R.drawable.ascent
+                                    "bind" -> R.drawable.bind
                                     "Breeze" -> R.drawable.breeze
-                                    "Icebox" -> R.drawable.icebox
+                                    "Abyss" -> R.drawable.abyss
                                     "Sunset" -> R.drawable.sunset
                                     else -> R.drawable.cypher
                                 }

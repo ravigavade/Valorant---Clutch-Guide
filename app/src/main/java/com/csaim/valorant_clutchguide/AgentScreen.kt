@@ -63,7 +63,11 @@ class AgentScreen : ComponentActivity() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    val agents = listOf("Brimstone", "Phoenix", "Sage", "Sova", "Viper", "Cypher", "Reyna", "kj", "Breach", "Omen", "Jett", "Raze", "Skye", "Yoru", "Astra", "KAYO", "Chamber", "Neon", "Fade", "Harbor", "Gekko", "Deadlock", "Iso", "Clove","Vyse","Tejo","Waylay"  )
+                    val agents = listOf(
+                        "Astra", "Breach", "Brimstone", "Chamber", "Clove", "Cypher", "Deadlock", "Fade",
+                        "Gekko", "Harbor", "Iso", "Jett", "KAYO", "kj", "Neon", "Omen", "Phoenix", "Raze",
+                        "Reyna", "Sage", "Skye", "Sova", "Tejo", "Vyse", "Viper", "Waylay", "Yoru"
+                    )
 
                     LazyVerticalGrid(
                         modifier = Modifier.padding(horizontal = 7.dp),
