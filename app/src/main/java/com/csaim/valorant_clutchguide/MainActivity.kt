@@ -214,35 +214,35 @@ fun home_screen(modifier: Modifier = Modifier) {
 
 
                     // Menu items
-                    Row(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()
-
-
-                            .clickable {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(yt)))
-                            }
-                    ) {
-                        Card(
-                            shape = RoundedCornerShape(5.dp),
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.yt),
-                                contentDescription = "Youtube Icon",
-                                modifier = Modifier.size(50.dp),
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                        Text(
-                            "Youtube",
-                            fontSize = 18.sp,
-                            fontFamily = valo,
-                            color = Color.White,
-
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .padding(8.dp)
+//                            .fillMaxWidth()
+//
+//
+//                            .clickable {
+//                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(yt)))
+//                            }
+//                    ) {
+//                        Card(
+//                            shape = RoundedCornerShape(5.dp),
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.yt),
+//                                contentDescription = "Youtube Icon",
+//                                modifier = Modifier.size(50.dp),
+//                                contentScale = ContentScale.Crop
+//                            )
+//                        }
+//                        Text(
+//                            "Youtube",
+//                            fontSize = 18.sp,
+//                            fontFamily = valo,
+//                            color = Color.White,
+//
+//                            modifier = Modifier.padding(16.dp)
+//                        )
+//                    }
 
                     Row(
                         modifier = Modifier
